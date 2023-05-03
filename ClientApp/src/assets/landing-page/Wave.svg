@@ -1,0 +1,42 @@
+<svg
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+                xmlnsXlink="http://www.w3.org/1999/xlink"
+                width="1920"
+                height="1080"
+                preserveAspectRatio="none"
+                viewBox="0 0 1920 1080"
+            >
+                <g mask='url("#SvgjsMask2448")' fill="none">
+                    <rect
+                        width="1920"
+                        height="1080"
+                        x="0"
+                        y="0"
+                        fill="url(#SvgjsLinearGradient2449)"
+                    ></rect>
+                    <path
+                        d="M 0,546 C 128,477.8 384,142.8 640,205 C 896,267.2 1024,890.4 1280,857 C 1536,823.6 1792,201.8 1920,38L1920 1080L0 1080z"
+                        fill="rgba(255, 255, 255, 1)"
+                    ></path>
+                </g>
+                <defs>
+                    <mask id="SvgjsMask2448">
+                        <rect width="1920" height="1080" fill="#ffffff"></rect>
+                    </mask>
+                    <linearGradient
+                        x1="89.06%"
+                        y1="-19.44%"
+                        x2="10.94%"
+                        y2="119.44%"
+                        gradientUnits="userSpaceOnUse"
+                        id="SvgjsLinearGradient2449"
+                    >
+                        <stop
+                            stopColor="rgba(0, 144, 255, 1)"
+                            offset="0"
+                        ></stop>
+                        <stop stopColor="rgba(255, 0, 0, 1)" offset="1"></stop>
+                    </linearGradient>
+                </defs>
+            </svg>

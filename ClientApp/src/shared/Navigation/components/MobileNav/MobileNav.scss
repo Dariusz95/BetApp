@@ -1,0 +1,98 @@
+$menuHeight: 65px;
+
+.navbar {
+    height: $menuHeight;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+
+.menu-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.hamburger {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.line {
+    width: 30px;
+    height: 3px;
+    background-color: #000;
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.line-1 {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.line-2 {
+    opacity: 0;
+}
+
+.line-3 {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.menu-overlay {
+    position: fixed;
+    top: $menuHeight;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    z-index: 998;
+}
+
+.menu-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.menu {
+    position: fixed;
+    top: $menuHeight;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #000000a3;
+    padding: 20px;
+    list-style: none;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
+    transform: translateX(-100%);
+    transition: all 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.menu-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__item {
+        margin: 20px 0;
+
+        a {
+            font-size: 20px;
+            color: white;
+        }
+    }
+}
+
+.show {
+    transform: translateX(0%);
+    opacity: 1;
+    visibility: visible;
+}

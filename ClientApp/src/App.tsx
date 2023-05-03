@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 
 import './App.css'
 import Login from './pages/Login'
-import Navigation from './components/Navigation'
+import Navigation from './shared/Navigation/Navigation'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Register from './pages/Register'
 import Home from './pages/Home'
+import LandingPage from './landing-page/landingPage'
 
 function App() {
     const [isAuthenticated,setIsAuthenticated] = useState(false)
@@ -33,9 +34,10 @@ function App() {
             <BrowserRouter>
                 <Navigation isAuthenticated={isAuthenticated}  onLogout={setIsAuthenticated}/>
 
-                <main className="text-center">
+                <main>
                     <Routes>
-                        <Route path="/" element={<Home isAuthenticated={isAuthenticated}/>} />
+                        <Route path="/" element={<LandingPage/>} />
+                        <Route path="/home" element={<Home isAuthenticated={isAuthenticated}/>} />
                         <Route path="/login" element={<Login onLogin={setIsAuthenticated} />} />
                         <Route path="/register" element={<Register />} />
                     </Routes>
