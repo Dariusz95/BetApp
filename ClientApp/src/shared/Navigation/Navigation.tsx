@@ -31,6 +31,7 @@ const Navigation = (props: {
         navItems = [
             { text: 'Logowanie', url: '/login' },
             { text: 'Rejestracja', url: '/register' },
+            { text: 'Obstawiaj', url: '/bet' },
         ]
     }
 

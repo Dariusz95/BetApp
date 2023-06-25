@@ -8,7 +8,7 @@ const DesktopNav: React.FC<NavigationProps> = ({ navItems }) => {
             <a href="/" className="desktop-menu__logo">
                 Logo
             </a>
-            <ul className='desktop-menu__items'>
+            <ul className='desktop-menu__items m-0 font-weight-bold'>
                 {navItems.map((item, index) => (
                     <li key={index}>
                         {item.onClick ? (

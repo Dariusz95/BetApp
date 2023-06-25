@@ -1,5 +1,7 @@
 using BetApp.Data;
 using BetApp.Helpers;
+using BetApp.Interfaces;
+using BetApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -10,13 +12,17 @@ using Microsoft.IdentityModel.Logging;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
-
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services
-	.AddDbContext<UserContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<UserContext>(options =>
+	options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<TeamContext>(options =>
+	options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<JwtService>();
 
 builder.Services.AddCors(options =>
@@ -32,6 +38,10 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR(o =>
+{
+	o.EnableDetailedErrors = true;
+});
 
 
 var app = builder.Build();
@@ -64,6 +74,8 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
 	endpoints.MapControllers();
+	endpoints.MapHub<MatchHub>("/matchHub");
 });
+
 
 app.Run();
