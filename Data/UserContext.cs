@@ -17,12 +17,6 @@ namespace BetApp.Data
 			modelBuilder.Entity<User>()
 				.Property<int>("Id")
 				.IsRequired();
-
-			//modelBuilder.Entity<User>(
-				//entity =>
-				//{
-				//	entity.HasIndex(e => e.Email).IsUnique();
-			//	});
 		}
 	}
 

@@ -9,11 +9,11 @@ import { Link } from 'react-router-dom'
 const LandingTop = () => {
     return (
         <div className="landing-page-container">
-            <img
+            {/* <img
                 className="landing-page-bcg"
                 src={bcg}
                 alt="shape"
-            />
+            /> */}
             <div className="text-area">
                 <h2 className="text-area__header">
                     Wirtualna rozrywka w obstawianie meczy

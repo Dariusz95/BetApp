@@ -4,7 +4,6 @@ import { spawn } from 'child_process'
 import { NavigationProps } from '../navigationProps'
 
 const MobileNav: React.FC<NavigationProps> = (props: NavigationProps) => {
-    // const MobileNav: React.FC<NavigationProps> = ({ navItems }) => {
     const [click, setClick] = useState(false)
 
     const handleClick = () => setClick(!click)

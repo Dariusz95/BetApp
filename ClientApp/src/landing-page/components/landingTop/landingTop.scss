@@ -1,9 +1,14 @@
 $pink-color:#ad3db9;
 
 .landing-page-container{
-    height: 90vh;
+    height: 100vh;
     position: relative;
     padding-top: 65px;
+    background: url('/assets/landing-page/landing-page-ball.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .landing-page-bcg{
@@ -20,7 +25,7 @@ $pink-color:#ad3db9;
     width: 50%;
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     margin-left: 150px;
     padding-top: 200px;
     color: white;

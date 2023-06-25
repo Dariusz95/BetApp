@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Register from './pages/Register'
 import Home from './pages/Home'
 import LandingPage from './landing-page/landingPage'
+import BetPage from './pages/bet-page/BetPage'
 
 function App() {
     const [isAuthenticated,setIsAuthenticated] = useState(false)
@@ -18,7 +19,6 @@ function App() {
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
             }).then((response) => {
-                console.log('response',response);
                 if (response.ok) {
                     setIsAuthenticated(true)
                 }
@@ -39,6 +39,7 @@ function App() {
                         <Route path="/" element={<LandingPage/>} />
                         <Route path="/home" element={<Home isAuthenticated={isAuthenticated}/>} />
                         <Route path="/login" element={<Login onLogin={setIsAuthenticated} />} />
+                        <Route path="/bet" element={<BetPage/>} />
                         <Route path="/register" element={<Register />} />
                     </Routes>
                 </main>
