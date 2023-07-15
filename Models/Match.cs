@@ -7,5 +7,6 @@
 		public Team TeamB { get; set; }
 		public decimal TeamACourse { get; set; } = 2;
 		public decimal TeamBCourse { get; set; } = 2;
+		public double DrawCourse { get; set; } = 3;
 	}
 }

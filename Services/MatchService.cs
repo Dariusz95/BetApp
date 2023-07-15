@@ -3,11 +3,9 @@ using BetApp.Interfaces;
 using BetApp.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 using Match = BetApp.Models.Match;
-using Microsoft.AspNetCore.SignalR;
 using BetApp.Requests;
-using Microsoft.Extensions.FileSystemGlobbing;
+
 
 namespace BetApp.Services
 {
@@ -20,7 +18,7 @@ namespace BetApp.Services
 		private readonly Random _random;
 
 
-			public MatchService(TeamContext context, IHubContext<MatchHub> hubContext, ITeamService teamService, IServiceProvider serviceProvider)
+		public MatchService(TeamContext context, IHubContext<MatchHub> hubContext, ITeamService teamService, IServiceProvider serviceProvider)
 		{
 			_context = context;
 			_hubContext = hubContext;
@@ -54,8 +52,9 @@ namespace BetApp.Services
 					Id = Guid.NewGuid(),
 					TeamA = team1,
 					TeamB = team2,
-					TeamACourse = Math.Round((decimal)bothTeamsPower / team1.Power,2),
-					TeamBCourse = Math.Round((decimal)bothTeamsPower / team2.Power,2)
+					TeamACourse = Math.Round((decimal)bothTeamsPower / team1.Power, 2),
+					TeamBCourse = Math.Round((decimal)bothTeamsPower / team2.Power, 2),
+					DrawCourse = 3.3
 				};
 				matches.Add(match);
 			}
@@ -88,16 +87,20 @@ namespace BetApp.Services
 
 		private async Task SimulateMatch(string connectionId, Guid matchId, MatchResult matchData)
 		{
+			double firstTeamgoalChance = (double)matchData.TeamA.Power / 20;
+			double secondTeamgoalChance = (double)matchData.TeamB.Power / 20;
+
 			while (matchData.Counter <= 90)
 			{
-				if (IsTeamScoredGoal(matchData.TeamA.Power))
+				if (IsTeamScoredGoal(firstTeamgoalChance))
 				{
 					matchData.TeamAScore++;
 				}
 
-				if (IsTeamScoredGoal(matchData.TeamB.Power))
+				if (IsTeamScoredGoal(secondTeamgoalChance))
 				{
 					matchData.TeamBScore++;
+					
 				}
 
 				await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("CounterUpdated", matchData);
@@ -110,10 +113,9 @@ namespace BetApp.Services
 			await _hubContext.Groups.RemoveFromGroupAsync(connectionId, matchId.ToString("D"));
 		}
 
-		private bool IsTeamScoredGoal(int teamPower)
+		private bool IsTeamScoredGoal(double goalChance)
 		{
 			double randomNumber = _random.NextDouble() * 100;
-			double goalChance = (double)teamPower / 20;
 
 			return randomNumber <= goalChance;
 		}
