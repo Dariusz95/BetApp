@@ -1,17 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './BetPage.scss'
-import { Match, SelectedMatch } from './interfaces/Match'
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import MatchResultPage from '../result-page/MatchResultPage'
+import { Match } from './interfaces/Match'
 import SingleMatch from './components/SingleMatch/SingleMatch'
 import SelectedMatchesModal from './components/SelectedMatchesModal/SelectedMatchesModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateSelectedMatch } from '../../store/matchSlice'
+import { RootState } from '../../store/store'
+import { Link } from 'react-router-dom'
 
 const BetPage = () => {
   const [matches, setMatches] = useState<Match[]>([])
-  const [selectedMatches, setSelectedMatches] = useState<Match[]>([])
   const [expand, setExpand] = useState({} as { [key: string]: boolean })
+  const dispatch = useDispatch()
+  const selectedMatches = useSelector((state: RootState) => state.selectedMatches.selectedMatches)
 
   useEffect(() => {
     fetchMatches()
@@ -24,79 +26,9 @@ const BetPage = () => {
     }))
   }
 
-  const updateSelectedMatches = (updatedMatches: Match[]) => {
-    const filteredMatches = updatedMatches.filter((match) => match.selected !== null)
-    setSelectedMatches(filteredMatches)
+  const selectType = (match: Match) => {
+    dispatch(updateSelectedMatch({ match }))
   }
-
-  const selectType = (match: Match, selectedType: '1' | 'X' | '2') => {
-    const matchIndex = matches.findIndex((selectedMatch) => selectedMatch.id === match.id)
-
-    if (matchIndex !== -1) {
-      const existingMatch = matches[matchIndex]
-
-      if (existingMatch.selected === selectedType) {
-        setMatches((prevSelectedMatches) => {
-          const updatedMatches = [...prevSelectedMatches]
-          updatedMatches[matchIndex].selected = null
-          updateSelectedMatches(updatedMatches)
-          return updatedMatches
-        })
-      } else {
-        setMatches((prevSelectedMatches) => {
-          const updatedMatches = [...prevSelectedMatches]
-          updatedMatches[matchIndex].selected = selectedType
-          updateSelectedMatches(updatedMatches)
-          return updatedMatches
-        })
-      }
-    }
-  }
-  // const addToSelectedMatches = (match: Match, selectedType: '1' | 'X' | '2', course: number) => {
-  //   const matchIndex = selectedMatches.findIndex((selectedMatch) => selectedMatch.id === match.id)
-
-  //   if (matchIndex !== -1) {
-  //     const existingMatch = selectedMatches[matchIndex]
-  //     if (existingMatch.selected === selectedType) {
-  //       setSelectedMatches((prevSelectedMatches) => {
-  //         const updatedMatches = [...prevSelectedMatches]
-  //         updatedMatches.splice(matchIndex, 1)
-  //         return updatedMatches
-  //       })
-  //       return
-  //     }
-  //   }
-
-  //   if (matchIndex !== -1) {
-  //     const existingMatch = selectedMatches[matchIndex]
-  //     if (existingMatch.selected === selectedType) {
-  //       setSelectedMatches((prevSelectedMatches) => {
-  //         const updatedMatches = [...prevSelectedMatches]
-  //         updatedMatches.splice(matchIndex, 1)
-  //         return updatedMatches
-  //       })
-  //       return
-  //     } else {
-  //       setSelectedMatches((prevSelectedMatches) => {
-  //         const updatedMatches = [...prevSelectedMatches]
-  //         const selectedMatch = updatedMatches[matchIndex]
-  //         selectedMatch.course = course
-  //         selectedMatch.selected = selectedType
-  //         return updatedMatches
-  //       })
-  //     }
-  //   } else {
-  //     const selectedMatch: SelectedMatch = {
-  //       id: match.id,
-  //       teamA: match.teamA,
-  //       teamB: match.teamB,
-  //       course: course,
-  //       selected: selectedType,
-  //     }
-
-  //     setSelectedMatches((prevSelectedMatches) => [...prevSelectedMatches, selectedMatch])
-  //   }
-  // }
 
   const fetchMatches = () => {
     axios
@@ -130,12 +62,20 @@ const BetPage = () => {
                 handleAccordionClick={handleAccordionClick}
                 key={match.id}
                 addToSelectedMatches={selectType}
+                selectedMatch={selectedMatches.find(
+                  (selectedMatch) => selectedMatch.id === match.id,
+                )}
               />
             ))}
           </div>
-          <MatchResultPage matches={matches}></MatchResultPage>
         </div>
       </div>
+      <div className='d-flex justify-content-center'>
+        <Link to='/result' className='result-button'>
+          Obstaw
+        </Link>
+      </div>
+
       {selectedMatches.length > 0 && <SelectedMatchesModal selectedMatches={selectedMatches} />}
     </div>
   )

@@ -2,14 +2,15 @@ import React from 'react'
 import { IMatchResult } from '../../bet-page/interfaces/Match'
 import MatchResult from './MatchResult'
 
-interface MatchResultProps {
-  data: IMatchResult[]
+interface MatchResultListProps {
+  resultMatchesList: IMatchResult[]
 }
 
-const MatchResultList: React.FC<MatchResultProps> = ({ data }) => {
+const MatchResultList: React.FC<MatchResultListProps> = ({ resultMatchesList }) => {
+  console.log('resultMatchesList', resultMatchesList)
   return (
     <div className='match-result'>
-      {data.map((match) => (
+      {resultMatchesList.map((match) => (
         <MatchResult key={match.id} match={match} />
       ))}
     </div>

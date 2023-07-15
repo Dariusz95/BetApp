@@ -3,17 +3,20 @@ import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { SingleMatch } from '../../interfaces/SingleMatch'
 import './SingleMatch.scss'
+import { BetType } from '../../interfaces/Match'
 
 const singleMatch: React.FC<SingleMatch> = ({
   match,
   isExpanded,
   handleAccordionClick,
   addToSelectedMatches,
+  selectedMatch,
 }) => {
-  const handleSelectType = (selectedType: '1' | 'X' | '2', course: number) => {
-    addToSelectedMatches(match, selectedType, course)
+  const handleSelectType = (selectedType: BetType) => {
+    const updatedMatch = { ...match, betType: selectedType }
+    addToSelectedMatches(updatedMatch)
   }
-
+  console.log(selectedMatch)
   return (
     <Accordion elevation={0} expanded={isExpanded} key={match.id}>
       <AccordionSummary
@@ -24,27 +27,27 @@ const singleMatch: React.FC<SingleMatch> = ({
         <Typography component={'div'} className='d-flex justify-content-between match'>
           {' '}
           <div
-            onClick={() => handleSelectType('1', match.teamACourse)}
+            onClick={() => handleSelectType(BetType.Team1)}
             className={`match__item d-flex justify-content-between ${
-              match.selected === '1' ? 'selected' : ''
+              selectedMatch?.betType === BetType.Team1 ? 'selected' : ''
             }`}
           >
             <span>{match.teamA.name}</span>
             <span>{match.teamACourse}</span>
           </div>
           <div
-            onClick={() => handleSelectType('X', match.drawCourse)}
+            onClick={() => handleSelectType(BetType.Draw)}
             className={`match__item d-flex justify-content-between ${
-              match.selected === 'X' ? 'selected' : ''
+              selectedMatch?.betType === BetType.Draw ? 'selected' : ''
             }`}
           >
             <span>X</span>
             <span>3.30</span>
           </div>
           <div
-            onClick={() => handleSelectType('2', match.teamBCourse)}
+            onClick={() => handleSelectType(BetType.Team2)}
             className={`match__item d-flex justify-content-between ${
-              match.selected === '2' ? 'selected' : ''
+              selectedMatch?.betType === BetType.Team2 ? 'selected' : ''
             }`}
           >
             <span>{match.teamB.name}</span>
