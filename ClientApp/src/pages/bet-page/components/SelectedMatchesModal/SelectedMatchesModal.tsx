@@ -19,7 +19,7 @@ const SelectedMatchesModal: React.FC<SelectedMatchesModalProps> = ({ selectedMat
             <ul>
               {selectedMatches.map((match) => (
                 <li key={match.id}>
-                  {match.teamA.name} vs. {match.teamB.name} - Twój typ: {match.selected}
+                  {match.teamA.name} vs. {match.teamB.name} - Twój typ: {match.betType}
                 </li>
               ))}
             </ul>

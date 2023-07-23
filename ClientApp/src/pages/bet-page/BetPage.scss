@@ -13,7 +13,7 @@
   }
 }
 
-.match__item {
+.type-item {
   display: flex;
   align-items: center;
   padding: 5px 10px;
@@ -24,10 +24,38 @@
   background: $green-gradient;
 }
 
+.goal-typ-item {
+  width: auto;
+  margin: 0;
+}
+
+.goal-types > *:nth-child(odd) {
+  margin-left: auto;
+}
+
+.goal-types > *:nth-child(even) {
+  margin-right: auto;
+}
+
 .matches {
   // width: 50%;
 }
 
 .match {
   width: 100%;
+}
+
+.result-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #ddd;
+  }
 }
