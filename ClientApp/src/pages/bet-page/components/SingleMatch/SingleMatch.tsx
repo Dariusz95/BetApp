@@ -4,6 +4,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { SingleMatch } from '../../interfaces/SingleMatch'
 import './SingleMatch.scss'
 import { BetType } from '../../interfaces/Match'
+import MatchItem from './GoalTypeItem'
+import GoalTypeItem from './GoalTypeItem'
+import MainTypes from './MainTypes'
 
 const singleMatch: React.FC<SingleMatch> = ({
   match,
@@ -16,7 +19,6 @@ const singleMatch: React.FC<SingleMatch> = ({
     const updatedMatch = { ...match, betType: selectedType }
     addToSelectedMatches(updatedMatch)
   }
-  console.log(selectedMatch)
   return (
     <Accordion elevation={0} expanded={isExpanded} key={match.id}>
       <AccordionSummary
@@ -26,37 +28,26 @@ const singleMatch: React.FC<SingleMatch> = ({
       >
         <Typography component={'div'} className='d-flex justify-content-between match'>
           {' '}
-          <div
-            onClick={() => handleSelectType(BetType.Team1)}
-            className={`match__item d-flex justify-content-between ${
-              selectedMatch?.betType === BetType.Team1 ? 'selected' : ''
-            }`}
-          >
-            <span>{match.teamA.name}</span>
-            <span>{match.teamACourse}</span>
-          </div>
-          <div
-            onClick={() => handleSelectType(BetType.Draw)}
-            className={`match__item d-flex justify-content-between ${
-              selectedMatch?.betType === BetType.Draw ? 'selected' : ''
-            }`}
-          >
-            <span>X</span>
-            <span>3.30</span>
-          </div>
-          <div
-            onClick={() => handleSelectType(BetType.Team2)}
-            className={`match__item d-flex justify-content-between ${
-              selectedMatch?.betType === BetType.Team2 ? 'selected' : ''
-            }`}
-          >
-            <span>{match.teamB.name}</span>
-            <span>{match.teamBCourse}</span>
-          </div>
+          <MainTypes
+            match={match}
+            selectedMatch={selectedMatch}
+            handleSelectType={handleSelectType}
+          />
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography>Reszta meczy</Typography>
+        <Typography component={'div'} className='d-flex goal-types row'>
+          {' '}
+          {Object.entries(match.goalTypes).map(([type, value], index) => (
+            <GoalTypeItem
+              key={type}
+              selectedMatch={selectedMatch}
+              mainType={{ type: type as BetType, value }}
+              handleSelectType={handleSelectType}
+              index={index}
+            />
+          ))}
+        </Typography>
       </AccordionDetails>
     </Accordion>
   )

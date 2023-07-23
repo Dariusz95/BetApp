@@ -13,7 +13,7 @@
   }
 }
 
-.match__item {
+.type-item {
   display: flex;
   align-items: center;
   padding: 5px 10px;
@@ -22,6 +22,19 @@
   margin: 0px 5px;
   cursor: pointer;
   background: $green-gradient;
+}
+
+.goal-typ-item {
+  width: auto;
+  margin: 0;
+}
+
+.goal-types > *:nth-child(odd) {
+  margin-left: auto;
+}
+
+.goal-types > *:nth-child(even) {
+  margin-right: auto;
 }
 
 .matches {

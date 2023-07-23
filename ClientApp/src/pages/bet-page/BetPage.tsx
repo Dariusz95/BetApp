@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './BetPage.scss'
-import { Match } from './interfaces/Match'
+import { BetType, Match } from './interfaces/Match'
 import SingleMatch from './components/SingleMatch/SingleMatch'
 import SelectedMatchesModal from './components/SelectedMatchesModal/SelectedMatchesModal'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,6 +27,7 @@ const BetPage = () => {
   }
 
   const selectType = (match: Match) => {
+    console.log(match)
     dispatch(updateSelectedMatch({ match }))
   }
 
@@ -34,7 +35,7 @@ const BetPage = () => {
     axios
       .get<Match[]>('https://localhost:8000/api/match')
       .then((response) => {
-        const matchesData = response.data.map((match) => ({ ...match, selected: null }))
+        const matchesData = response.data.map((match) => ({ ...match, betType: BetType.None }))
         setMatches(matchesData)
         setExpand((prevExpand) => {
           const matchsWithBoolean: { [key: string]: boolean } = {}

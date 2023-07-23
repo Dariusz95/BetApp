@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Match = BetApp.Models.Match;
 using BetApp.Requests;
-
+using BetApp.Enums;
 
 namespace BetApp.Services
 {
@@ -52,13 +52,19 @@ namespace BetApp.Services
 					Id = Guid.NewGuid(),
 					TeamA = team1,
 					TeamB = team2,
-					TeamACourse = Math.Round((decimal)bothTeamsPower / team1.Power, 2),
-					TeamBCourse = Math.Round((decimal)bothTeamsPower / team2.Power, 2),
-					DrawCourse = 3.3
+					MainTypes = new Dictionary<MainType, decimal>
+					{
+						{ MainType.TeamA, Math.Round((decimal)bothTeamsPower / team1.Power, 2) },
+						{ MainType.TeamB, Math.Round((decimal)bothTeamsPower / team2.Power, 2) },
+						{ MainType.Draw, 3.3m }
+					}
+
 				};
 				matches.Add(match);
 			}
-
+/*		TeamACourse = Math.Round((decimal) bothTeamsPower / team1.Power, 2),
+					TeamBCourse = Math.Round((decimal) bothTeamsPower / team2.Power, 2),
+					DrawCourse = 3.3*/
 			return matches;
 		}
 
