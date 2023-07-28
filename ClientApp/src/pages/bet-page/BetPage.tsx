@@ -35,7 +35,12 @@ const BetPage = () => {
     axios
       .get<Match[]>('https://localhost:8000/api/match')
       .then((response) => {
-        const matchesData = response.data.map((match) => ({ ...match, betType: BetType.None }))
+        const matchesData = response.data.map((match) => ({
+          ...match,
+          betType: BetType.None,
+          thumbnail:
+            'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/1200px-FC_Barcelona_%28crest%29.svg.png',
+        }))
         setMatches(matchesData)
         setExpand((prevExpand) => {
           const matchsWithBoolean: { [key: string]: boolean } = {}

@@ -1,0 +1,20 @@
+.single-match-result {
+  margin-bottom: 15px;
+  border-bottom:1px solid black;
+  
+  &__status{
+    padding: 2px 4px;
+    background-color: rgb(189, 0, 0);
+    color: whitesmoke;
+    border-radius: 10px;
+  }
+
+  //  &__match{
+  //   width: 400px;
+  //   justify-content: space-between
+  //  }
+
+   &__team{
+    max-width: 190px;
+   }
+}

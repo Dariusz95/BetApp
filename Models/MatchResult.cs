@@ -8,5 +8,6 @@
 		public int TeamAScore { get; set; }
 		public int TeamBScore { get; set; }
 		public int Counter { get; set; }
+		public bool? IsOver { get; set; }
 	}
 }

@@ -16,6 +16,7 @@ const singleMatch: React.FC<SingleMatch> = ({
   selectedMatch,
 }) => {
   const handleSelectType = (selectedType: BetType) => {
+    console.log(selectedType)
     const updatedMatch = { ...match, betType: selectedType }
     addToSelectedMatches(updatedMatch)
   }

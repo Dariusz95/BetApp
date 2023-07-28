@@ -1,33 +1,44 @@
-import React, { useEffect, useRef, useState } from 'react';
-import MatchHubConnection from './components/MatchHubConnection';
-import { MatchResultProps } from './interfaces/MatchResultProps';
-import MatchResultList from './components/MatchResultList'
-import { IMatchResult, Match } from '../bet-page/interfaces/Match'
+import React, { useEffect, useRef, useState } from 'react'
+import MatchHubConnection from './components/MatchHubConnection'
+import { MatchResultProps } from './interfaces/MatchResultProps'
+import MatchResultList from './components/MatchResultList/MatchResultList'
+import { IMatchResult, IMatchUpdateData } from '../bet-page/interfaces/Match'
 import './MatchResultPage.scss'
+import Match from './components/Match/Match'
 
 const MatchResultPage: React.FC<MatchResultProps> = ({ matches }) => {
-  const [resultMatchesList, setResultMatchesList] = useState<IMatchResult[]>([])
-  const handleCounterUpdated = (updatedData: IMatchResult) => {
-    setResultMatchesList((prevData) => {
-      const existingMatchIndex = prevData.findIndex((match) => match.id === updatedData.id)
+  const [resultMatchesList, setResultMatchesList] = useState<IMatchResult[]>(matches)
 
-      if (existingMatchIndex !== -1) {
-        prevData[existingMatchIndex] = updatedData
-        return [...prevData]
-      } else {
-        return [...prevData, updatedData]
-      }
+  const handleCounterUpdated = (updatedData: IMatchUpdateData) => {
+    setResultMatchesList((prevMatches) => {
+      return prevMatches.map((match) => {
+        if (match.id === updatedData.id) {
+          return {
+            ...match,
+            counter: updatedData.counter,
+            teamAScore: updatedData.teamAScore,
+            teamBScore: updatedData.teamBScore,
+            isOver: updatedData.isOver,
+          }
+        } else {
+          return match
+        }
+      })
     })
   }
 
   return (
     <div className='match-result-page w-100 d-flex justify-content-center align-items-center'>
-      <div className='d-flex'>
+      <div className='d-flex flex-column matches-result'>
         <MatchHubConnection matches={matches} onCounterUpdated={handleCounterUpdated} />
-        {resultMatchesList && <MatchResultList resultMatchesList={resultMatchesList} />}
+        <ul className='match-result-list m-0 p-0'>
+          {resultMatchesList.map((match) => (
+            <Match key={match.id} match={match} />
+          ))}
+        </ul>
       </div>
     </div>
   )
 }
 
-export default MatchResultPage;
+export default MatchResultPage

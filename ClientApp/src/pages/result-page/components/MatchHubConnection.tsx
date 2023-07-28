@@ -9,6 +9,7 @@ interface MatchHubProps {
 
 const MatchHubConnection: React.FC<MatchHubProps> = ({ matches, onCounterUpdated }) => {
   const [connection, setConnection] = useState<HubConnection | null>(null)
+  const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
     const createConnection = async () => {
@@ -22,6 +23,7 @@ const MatchHubConnection: React.FC<MatchHubProps> = ({ matches, onCounterUpdated
         await hubConnection.start()
 
         hubConnection.on('CounterUpdated', (data: any) => {
+          // console.log(data)
           onCounterUpdated(data)
         })
 
@@ -30,6 +32,7 @@ const MatchHubConnection: React.FC<MatchHubProps> = ({ matches, onCounterUpdated
         })
 
         setConnection(hubConnection)
+        setIsConnected(true)
       } catch (error) {
         console.log('Err:', error)
       }
@@ -51,7 +54,7 @@ const MatchHubConnection: React.FC<MatchHubProps> = ({ matches, onCounterUpdated
           matchId: match.id,
           teamAId: match.teamA.id,
           teamBId: match.teamB.id,
-        }));
+        }))
         connection.invoke('StartMatch', matchRequests)
       }
     } catch (error) {
@@ -59,10 +62,12 @@ const MatchHubConnection: React.FC<MatchHubProps> = ({ matches, onCounterUpdated
     }
   }
 
-  return (
-    <div>
-        <button onClick={startAllMatches}>Rozpocznij wszystkie mecze</button>
-    </div>
-  )
+  useEffect(() => {
+    if (isConnected) {
+      startAllMatches()
+    }
+  }, [isConnected])
+
+  return null
 }
 export default MatchHubConnection
