@@ -10,4 +10,5 @@ export interface SingleMatch {
 
 export interface SelectedMatchesModalProps {
   selectedMatches: Match[]
+  totalBetTypeCourse: number
 }
