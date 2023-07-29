@@ -5,16 +5,8 @@ export interface Match {
   mainTypes: Record<BetType, number>
   goalTypes: Record<BetType, number>
   betType: BetType
+  betTypeCourse?: number
 }
-
-export interface IMatchResult extends Match {
-  counter?: number
-  teamAScore?: number
-  teamBScore?: number
-  isOver?: boolean
-  isBetWin?: boolean
-}
-
 
 export enum BetType {
   TeamA = 'TeamA',
@@ -28,6 +20,20 @@ export enum BetType {
   Minus4_5 = 'Minus4_5',
   Plus4_5 = 'Plus4_5',
 }
+
+export interface IMatchResult extends Match {
+  counter?: number
+  teamAScore?: number
+  teamBScore?: number
+  isOver?: boolean
+  isBetWin?: boolean
+}
+
+export interface MainTypes {
+  goalTypes: Record<BetType, number>
+}
+
+
 
 export interface Team {
   id: string

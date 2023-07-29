@@ -5,7 +5,7 @@ interface MatchItemProps {
   mainType: { type: BetType; value: number }
   selectedMatch?: Match
   index: number
-  handleSelectType: (selectedType: BetType) => void
+  handleSelectType: (selectedType: BetType, betCourse: number) => void
 }
 
 const GoalTypeItem: React.FC<MatchItemProps> = ({
@@ -17,8 +17,7 @@ const GoalTypeItem: React.FC<MatchItemProps> = ({
   const { type, value } = mainType
   const indexType = index % 2 === 0 ? 'even' : 'odd'
   const handleClick = () => {
-    console.log(type)
-    handleSelectType(type)
+    handleSelectType(type, value)
   }
 
   return (

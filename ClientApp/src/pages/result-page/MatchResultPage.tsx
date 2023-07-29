@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import MatchHubConnection from './components/MatchHubConnection'
 import { MatchResultProps } from './interfaces/MatchResultProps'
-import MatchResultList from './components/MatchResultList/MatchResultList'
 import { IMatchResult, IMatchUpdateData } from '../bet-page/interfaces/Match'
 import './MatchResultPage.scss'
 import Match from './components/Match/Match'
@@ -28,8 +27,8 @@ const MatchResultPage: React.FC<MatchResultProps> = ({ matches }) => {
   }
 
   return (
-    <div className='match-result-page w-100 d-flex justify-content-center align-items-center'>
-      <div className='d-flex flex-column matches-result'>
+    <div className='container match-result-page d-flex justify-content-center align-items-center'>
+      <div className='d-flex flex-column matches-result w-75'>
         <MatchHubConnection matches={matches} onCounterUpdated={handleCounterUpdated} />
         <ul className='match-result-list m-0 p-0'>
           {resultMatchesList.map((match) => (

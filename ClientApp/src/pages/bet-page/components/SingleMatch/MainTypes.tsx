@@ -4,14 +4,14 @@ import { BetType, Match } from '../../interfaces/Match'
 interface MainTypesProps {
   match: Match
   selectedMatch?: Match
-  handleSelectType: (selectedType: BetType) => void
+  handleSelectType: (selectedType: BetType, betCourse: number) => void
 }
 
 const MainTypes: React.FC<MainTypesProps> = ({ match, selectedMatch, handleSelectType }) => {
   return (
     <>
       <div
-        onClick={() => handleSelectType(BetType.TeamA)}
+        onClick={() => handleSelectType(BetType.TeamA, match.mainTypes[BetType.TeamA])}
         className={`type-item d-flex justify-content-between ${
           selectedMatch?.betType === BetType.TeamA ? 'selected' : ''
         }`}
@@ -20,7 +20,7 @@ const MainTypes: React.FC<MainTypesProps> = ({ match, selectedMatch, handleSelec
         <span>{match.mainTypes[BetType.TeamA]}</span>
       </div>
       <div
-        onClick={() => handleSelectType(BetType.Draw)}
+        onClick={() => handleSelectType(BetType.Draw, match.mainTypes[BetType.Draw])}
         className={`type-item d-flex justify-content-between ${
           selectedMatch?.betType === BetType.Draw ? 'selected' : ''
         }`}
@@ -29,7 +29,7 @@ const MainTypes: React.FC<MainTypesProps> = ({ match, selectedMatch, handleSelec
         <span>{match.mainTypes[BetType.Draw]}</span>
       </div>
       <div
-        onClick={() => handleSelectType(BetType.TeamB)}
+        onClick={() => handleSelectType(BetType.TeamB, match.mainTypes[BetType.TeamB])}
         className={`type-item d-flex justify-content-between ${
           selectedMatch?.betType === BetType.TeamB ? 'selected' : ''
         }`}
