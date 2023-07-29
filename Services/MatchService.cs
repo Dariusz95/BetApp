@@ -62,9 +62,7 @@ namespace BetApp.Services
 				};
 				matches.Add(match);
 			}
-/*		TeamACourse = Math.Round((decimal) bothTeamsPower / team1.Power, 2),
-					TeamBCourse = Math.Round((decimal) bothTeamsPower / team2.Power, 2),
-					DrawCourse = 3.3*/
+
 			return matches;
 		}
 
@@ -87,7 +85,7 @@ namespace BetApp.Services
 
 				await _hubContext.Groups.AddToGroupAsync(connectionId, matchRequest.MatchId.ToString("D"));
 
-				_ = SimulateMatch(connectionId, matchRequest.MatchId, matchData); // Rozpoczęcie symulacji meczu w osobnym wątku
+				_ = SimulateMatch(connectionId, matchRequest.MatchId, matchData);
 			}
 		}
 
@@ -96,8 +94,12 @@ namespace BetApp.Services
 			double firstTeamgoalChance = (double)matchData.TeamA.Power / 20;
 			double secondTeamgoalChance = (double)matchData.TeamB.Power / 20;
 
-			while (matchData.Counter <= 90)
+			while (matchData.Counter < 90)
 			{
+				if(matchData.Counter == 0){
+					await Task.Delay(1500);				
+				}
+
 				if (IsTeamScoredGoal(firstTeamgoalChance))
 				{
 					matchData.TeamAScore++;
@@ -111,8 +113,17 @@ namespace BetApp.Services
 
 				await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("CounterUpdated", matchData);
 				await Task.Delay(50);
+
+/*				if (matchData.Counter >= 90)
+				{
+					matchData.IsOver = true;
+					await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("CounterUpdated", matchData);
+				}*/
 				matchData.Counter++;
 			}
+
+			matchData.IsOver = true;
+			await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("CounterUpdated", matchData);
 
 			await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("MatchFinished");
 

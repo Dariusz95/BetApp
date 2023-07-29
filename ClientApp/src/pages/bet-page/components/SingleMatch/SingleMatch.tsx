@@ -3,8 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { SingleMatch } from '../../interfaces/SingleMatch'
 import './SingleMatch.scss'
-import { BetType } from '../../interfaces/Match'
-import MatchItem from './GoalTypeItem'
+import { BetType, Match } from '../../interfaces/Match'
 import GoalTypeItem from './GoalTypeItem'
 import MainTypes from './MainTypes'
 
@@ -15,8 +14,9 @@ const singleMatch: React.FC<SingleMatch> = ({
   addToSelectedMatches,
   selectedMatch,
 }) => {
-  const handleSelectType = (selectedType: BetType) => {
-    const updatedMatch = { ...match, betType: selectedType }
+  const handleSelectType = (selectedType: BetType, betCourse: number) => {
+    console.log(match)
+    const updatedMatch: Match = { ...match, betType: selectedType, betTypeCourse: betCourse }
     addToSelectedMatches(updatedMatch)
   }
   return (

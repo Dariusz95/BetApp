@@ -35,7 +35,10 @@ const BetPage = () => {
     axios
       .get<Match[]>('https://localhost:8000/api/match')
       .then((response) => {
-        const matchesData = response.data.map((match) => ({ ...match, betType: BetType.None }))
+        const matchesData = response.data.map((match) => ({
+          ...match,
+          betType: BetType.None,
+        }))
         setMatches(matchesData)
         setExpand((prevExpand) => {
           const matchsWithBoolean: { [key: string]: boolean } = {}

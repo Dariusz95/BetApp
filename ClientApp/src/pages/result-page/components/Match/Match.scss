@@ -1,0 +1,26 @@
+.result {
+  padding: 20px 20px 20px 0;
+  margin-bottom: 15px;
+
+  &__time{
+    flex-basis: 10%;
+  }
+
+  &__betInfo {
+    flex-basis: 40%;
+    // width: 100px;
+  }
+
+  // &__match {
+  //   // width: 400px;
+  //   justify-content: space-between;
+  // }
+}
+
+.is-win {
+  background-color: greenyellow;
+}
+
+.is-loss {
+  background-color: red;
+}

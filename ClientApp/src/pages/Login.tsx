@@ -23,7 +23,6 @@ const Login = (props: { onLogin: (isAuthenticated: boolean) => void }) => {
             })
             .catch((error) => console.error('Error:', error))
 
-        // const content = await Response.json();
     }
 
     if (redirect) {
