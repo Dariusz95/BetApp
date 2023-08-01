@@ -10,17 +10,9 @@ interface MatchProps {
 }
 
 const MatchResult: React.FC<MatchProps> = ({ match }) => {
-  const { counter: matchCounter, teamAScore, teamBScore, isOver } = match
+  const { counter: matchCounter, teamAScore, teamBScore, isOver, isBetWin } = match
   const { name: teamAName, imageUrl: teamAImageUrl } = match.teamA
   const { name: teamBName, imageUrl: teamBImageUrl } = match.teamB
-
-  const [isBetWin, setIsBetWin] = useState<boolean | null>(null)
-
-  useEffect(() => {
-    if (isOver && match.teamAScore !== undefined && match.teamBScore !== undefined) {
-      setIsBetWin(checkIfBetIsWin(match.betType, match.teamAScore, match.teamBScore))
-    }
-  }, [isOver, teamAScore, teamBScore, match.betType])
 
   return (
     <li className={`result d-flex py-2 ${isOver ? (isBetWin ? 'is-win' : 'is-loss') : ''}`}>
@@ -29,7 +21,7 @@ const MatchResult: React.FC<MatchProps> = ({ match }) => {
           {isOver ? 'koniec' : `${matchCounter}'`}
         </span>
       )}
-      <div className='d-flex flex-column px-2 w-50'>
+      <div className='result__match d-flex flex-column px-2'>
         <MatchTeam teamName={teamAName} teamImageUrl={teamAImageUrl} teamScore={teamAScore} />
         <MatchTeam teamName={teamBName} teamImageUrl={teamBImageUrl} teamScore={teamBScore} />
       </div>

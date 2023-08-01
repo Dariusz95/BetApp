@@ -1,9 +1,19 @@
-.match-result-page {
+.result-page {
   height: 100vh;
+  // background-image: url('https://bloximages.chicago2.vip.townnews.com/buffalonews.com/content/tncms/assets/v3/editorial/e/c5/ec5b19c3-7c5d-5fba-9fc0-0aa0e4171f85/61e7083d6f727.image.jpg?resize=1200%2C559');
+  background-image: url('https://external-preview.redd.it/DiH1vy1OEx6AuM93m99HQxElq7uAs4LagJuRcVg3Dog.jpg?auto=webp&s=d6222f2c1bf906d118f44ea08e3aee6d2499ec23');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  &__matches {
+    height: 100%;
+  }
 }
 
 .matches-result {
-  border: 1px solid black;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding: 20px;
   border-radius: 10px;
+  background: #ffffffab;
 }

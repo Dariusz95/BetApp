@@ -114,18 +114,12 @@ namespace BetApp.Services
 				await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("CounterUpdated", matchData);
 				await Task.Delay(50);
 
-/*				if (matchData.Counter >= 90)
-				{
-					matchData.IsOver = true;
-					await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("CounterUpdated", matchData);
-				}*/
 				matchData.Counter++;
 			}
 
 			matchData.IsOver = true;
-			await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("CounterUpdated", matchData);
 
-			await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("MatchFinished");
+			await _hubContext.Clients.Group(matchId.ToString("D")).SendAsync("MatchFinished", matchData);
 
 			await _hubContext.Groups.RemoveFromGroupAsync(connectionId, matchId.ToString("D"));
 		}

@@ -1,0 +1,28 @@
+.modal-content-win {
+  background: rgb(0, 167, 12);
+  background: linear-gradient(
+    70deg,
+    rgba(0, 167, 12, 0.804359243697479) 0%,
+    rgba(0, 209, 91, 0.8099614845938375) 100%
+  );
+
+    &__icon {
+    width: 100px;
+  }
+}
+.modal-content-loss {
+//   background: linear-gradient(70deg, rgba(192, 78, 131, 0.804) 0%, rgb(255 0 0 / 91%) 100%);
+
+  &__icon {
+    width: 100px;
+  }
+}
+
+.modal-content-win,
+.modal-content-loss {
+  border-radius: 8px;
+}
+
+.grey-color{
+    color:#919090;
+}

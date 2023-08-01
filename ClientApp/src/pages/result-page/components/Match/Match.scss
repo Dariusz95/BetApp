@@ -2,25 +2,39 @@
   padding: 20px 20px 20px 0;
   margin-bottom: 15px;
 
-  &__time{
+  &__time {
     flex-basis: 10%;
   }
 
   &__betInfo {
     flex-basis: 40%;
-    // width: 100px;
   }
-
-  // &__match {
-  //   // width: 400px;
-  //   justify-content: space-between;
-  // }
+  
+  &__match {
+    flex-basis: 40%;
+  }
 }
 
 .is-win {
-  background-color: greenyellow;
+  // background-color: greenyellow;
+  background: rgb(0, 167, 12);
+  background: linear-gradient(
+    70deg,
+    rgba(0, 167, 12, 0.5718662464985995) 0%,
+    rgba(0, 209, 91, 0.33657212885154064) 100%
+  );
+  border: 2px solid green;
+  border-radius: 5px;
 }
 
 .is-loss {
-  background-color: red;
+  // background-color: red;
+  background: rgb(167, 0, 0);
+  background: linear-gradient(
+    70deg,
+    rgba(167, 0, 0, 0.5718662464985995) 0%,
+    rgba(209, 0, 0, 0.33657212885154064) 100%
+  );
+  border: 2px solid red;
+  border-radius: 5px;
 }

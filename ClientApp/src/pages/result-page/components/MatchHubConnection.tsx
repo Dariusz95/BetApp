@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Match } from '../../bet-page/interfaces/Match'
+import { IMatchUpdateData, Match } from '../../bet-page/interfaces/Match'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 
 interface MatchHubProps {
   matches: Match[]
-  onCounterUpdated: (data: any) => void
+  onMatchUpdated: (data: IMatchUpdateData) => void
+  onMatchFinish: (data: IMatchUpdateData) => void
 }
 
-const MatchHubConnection: React.FC<MatchHubProps> = ({ matches, onCounterUpdated }) => {
+const MatchHubConnection: React.FC<MatchHubProps> = ({
+  matches,
+  onMatchUpdated: onMatchUpdated,
+  onMatchFinish: onMatchFinish,
+}) => {
   const [connection, setConnection] = useState<HubConnection | null>(null)
   const [isConnected, setIsConnected] = useState(false)
 
@@ -22,13 +27,12 @@ const MatchHubConnection: React.FC<MatchHubProps> = ({ matches, onCounterUpdated
       try {
         await hubConnection.start()
 
-        hubConnection.on('CounterUpdated', (data: any) => {
-          // console.log(data)
-          onCounterUpdated(data)
+        hubConnection.on('CounterUpdated', (data: IMatchUpdateData) => {
+          onMatchUpdated(data)
         })
 
-        hubConnection.on('MatchFinished', () => {
-          console.log('Match finished')
+        hubConnection.on('MatchFinished', (data: IMatchUpdateData) => {
+          onMatchFinish(data)
         })
 
         setConnection(hubConnection)
