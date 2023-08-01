@@ -1,0 +1,54 @@
+@import './../../../../shared/styles/styles.scss';
+
+.selected-matches-sidebar {
+  position: fixed;
+  top: 100px;
+  right: 0;
+  width: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.selected-matches-modal.modal-open {
+  top: 10%;
+  bottom: auto;
+  width: 50%;
+}
+
+.sidebar-content {
+  background-color: white;
+
+  &__header {
+    background-color: #3bb78f;
+  }
+  
+  &__bet {
+    background-color: #3bb78f;
+  }
+}
+
+.selected-matches-details-btn {
+  background-image: $green-gradient;
+}
+
+.matches-list {
+  list-style: none;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.103);
+
+  &__item {
+    background-color: white;
+
+    &--removeButton {
+      border: none;
+      background: none;
+      font-weight: bold;
+    }
+  }
+}
+
+.disabled-link {
+  pointer-events: none;
+}

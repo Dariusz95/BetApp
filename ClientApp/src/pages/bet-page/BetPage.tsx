@@ -7,13 +7,25 @@ import SelectedMatchesModal from './components/SelectedMatchesModal/SelectedMatc
 import { useDispatch, useSelector } from 'react-redux'
 import { updateSelectedMatch } from '../../store/matchSlice'
 import { RootState } from '../../store/store'
-import { Link } from 'react-router-dom'
+import SelectedMatchesSummarySidebar from './components/SelectedMatchesSummarySidebar/SelectedMatchesSummarySidebar'
+import MediaQuery from 'react-responsive'
 
 const BetPage = () => {
   const [matches, setMatches] = useState<Match[]>([])
   const [expand, setExpand] = useState({} as { [key: string]: boolean })
   const dispatch = useDispatch()
   const selectedMatches = useSelector((state: RootState) => state.selectedMatches.selectedMatches)
+  const [totalBetTypeCourse, setTotalBetTypeCourse] = useState(1)
+
+  const calculateTotalBetTypeCourse = (matches: Match[]) => {
+    const totalCourse = matches.reduce((acc, match) => acc * (match.betTypeCourse || 1), 1)
+    return totalCourse
+  }
+
+  useEffect(() => {
+    const newTotalBetTypeCourse = calculateTotalBetTypeCourse(selectedMatches)
+    setTotalBetTypeCourse(newTotalBetTypeCourse)
+  }, [selectedMatches])
 
   useEffect(() => {
     fetchMatches()
@@ -27,7 +39,6 @@ const BetPage = () => {
   }
 
   const selectType = (match: Match) => {
-    console.log(match)
     dispatch(updateSelectedMatch({ match }))
   }
 
@@ -54,33 +65,35 @@ const BetPage = () => {
   }
 
   return (
-    <div className='bet-page'>
-      <div className='bet-page__match-container container'>
-        <div className='matches-area d-flex flex-column align-items-center w-100'>
-          <h2>Lista meczy</h2>
-          <div className='matches w-100'>
-            {matches.map((match) => (
-              <SingleMatch
-                match={match}
-                isExpanded={expand[match.id]}
-                handleAccordionClick={handleAccordionClick}
-                key={match.id}
-                addToSelectedMatches={selectType}
-                selectedMatch={selectedMatches.find(
-                  (selectedMatch) => selectedMatch.id === match.id,
-                )}
-              />
-            ))}
+    <div className='bet-page d-flex flex-column'>
+      <div className='container'>
+        <div className='bet-page__match-container'>
+          <div className='matches-area d-flex flex-column align-items-center w-100'>
+            <h2>Lista meczy</h2>
+            <div className='matches w-100'>
+              {matches.map((match) => (
+                <SingleMatch
+                  match={match}
+                  isExpanded={expand[match.id]}
+                  handleAccordionClick={handleAccordionClick}
+                  key={match.id}
+                  addToSelectedMatches={selectType}
+                  selectedMatch={selectedMatches.find(
+                    (selectedMatch) => selectedMatch.id === match.id,
+                  )}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-      <div className='d-flex justify-content-center'>
-        <Link to='/result' className='result-button'>
-          Obstaw
-        </Link>
-      </div>
+      <MediaQuery minWidth={1224}>
+        <SelectedMatchesSummarySidebar selectedMatches={selectedMatches} totalBetTypeCourse={totalBetTypeCourse} />
+      </MediaQuery>
 
-      {selectedMatches.length > 0 && <SelectedMatchesModal selectedMatches={selectedMatches} />}
+      {/* <MediaQuery maxWidth={1224}>
+        {selectedMatches.length > 0 && <SelectedMatchesModal selectedMatches={selectedMatches} />}
+      </MediaQuery> */}
     </div>
   )
 }
