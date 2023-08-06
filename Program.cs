@@ -18,7 +18,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<UserContext>(options =>
 	options.UseNpgsql(connectionString));
-builder.Services.AddDbContext<TeamContext>(options =>
+builder.Services.AddDbContext<BetContext>(options =>
 	options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMatchService, MatchService>();

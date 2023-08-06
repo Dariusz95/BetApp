@@ -1,4 +1,4 @@
-import { BetType, Match } from '../pages/bet-page/interfaces/Match'
+import { BetType, Match } from '../models/Match'
 
 export function getBetTypeText(match: Match): string {
   switch (match.betType) {

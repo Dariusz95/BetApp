@@ -1,24 +1,24 @@
-﻿using BetApp.Data;
-using BetApp.Interfaces;
+﻿using BetApp.Interfaces;
 using BetApp.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Match = BetApp.Models.Match;
 using BetApp.Requests;
 using BetApp.Enums;
+using BetApp.Data;
 
 namespace BetApp.Services
 {
-	public class MatchService : IMatchService
+    public class MatchService : IMatchService
 	{
-		private readonly TeamContext _context;
+		private readonly BetContext _context;
 		private readonly IHubContext<MatchHub> _hubContext;
 		private readonly ITeamService _teamService;
 		private readonly IServiceProvider _serviceProvider;
 		private readonly Random _random;
 
 
-		public MatchService(TeamContext context, IHubContext<MatchHub> hubContext, ITeamService teamService, IServiceProvider serviceProvider)
+		public MatchService(BetContext context, IHubContext<MatchHub> hubContext, ITeamService teamService, IServiceProvider serviceProvider)
 		{
 			_context = context;
 			_hubContext = hubContext;
@@ -73,7 +73,21 @@ namespace BetApp.Services
 				var teamA = await _teamService.GetTeamById(matchRequest.TeamAId);
 				var teamB = await _teamService.GetTeamById(matchRequest.TeamBId);
 
-				var matchData = new MatchResult
+				var matchResult = new MatchResult
+				{
+					Id = matchRequest.MatchId,
+					TeamA = teamA,
+					TeamB = teamB,
+					BetTypeCourse = matchRequest.BetTypeCourse,
+					BetType = matchRequest.BetType
+				};
+
+				_context.MatchResults.Add(matchResult);
+
+				await _context.SaveChangesAsync();
+
+
+				var matchData = new LiveMatch
 				{
 					Id = matchRequest.MatchId,
 					TeamA = teamA,
@@ -89,7 +103,7 @@ namespace BetApp.Services
 			}
 		}
 
-		private async Task SimulateMatch(string connectionId, Guid matchId, MatchResult matchData)
+		private async Task SimulateMatch(string connectionId, Guid matchId, LiveMatch matchData)
 		{
 			double firstTeamgoalChance = (double)matchData.TeamA.Power / 20;
 			double secondTeamgoalChance = (double)matchData.TeamB.Power / 20;
@@ -130,5 +144,34 @@ namespace BetApp.Services
 
 			return randomNumber <= goalChance;
 		}
+		public async Task AddCoupon(IList<MatchResult> matchResults)
+		{
+
+			await _context.MatchResults.AddRangeAsync(matchResults);
+
+			var Course = 1.0m;
+
+			foreach (var matchResult in matchResults)
+			{
+				Course *= matchResult.BetTypeCourse;
+			}
+
+			var IsCouponWin = matchResults.All(matchResult => matchResult.IsWin == true);
+
+			var couponId = Guid.NewGuid();
+			var coupon = new Coupon
+			{
+				Id = couponId,
+				IsCouponWin = IsCouponWin,
+				Course = Course,
+				MatchResults = matchResults.ToList()
+			};
+
+			_context.Coupons.Add(coupon);
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task AddMatchResult(MatchResult matchResult){ }
 	}
+
 }

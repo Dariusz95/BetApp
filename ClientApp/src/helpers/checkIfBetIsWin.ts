@@ -1,4 +1,4 @@
-import { BetType } from '../pages/bet-page/interfaces/Match'
+import { BetType } from '../models/Match'
 
 export function checkIfBetIsWin(betType: BetType, teamAScore: number, teamBScore: number) {
   const goalsAmount = (teamAScore || 0) + (teamBScore || 0)

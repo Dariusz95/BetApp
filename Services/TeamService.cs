@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BetApp.Services
 {
-	public class TeamService:ITeamService
+    public class TeamService:ITeamService
 	{
-		private readonly TeamContext _context;
+		private readonly BetContext _context;
 
-		public TeamService(TeamContext context)
+		public TeamService(BetContext context)
 		{
 			_context = context;
 
