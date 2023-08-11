@@ -13,12 +13,16 @@ const MatchResultPage: React.FC<MatchResultProps> = ({ matches }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [isBetWin, setIsBetWin] = useState(false)
   const [potentialWin, setPotentialWin] = useState(0)
+  const [betValue, setBetValue] = useState(0)
   const location = useLocation()
   const [showConfetti, setShowConfetti] = useState(false)
 
   useEffect(() => {
-    setPotentialWin(location.state.potentialWin)
-  }, [location.state.potentialWin])
+    const { potentialWin, betValue } = location.state
+    console.log(betValue)
+    setPotentialWin(potentialWin)
+    setBetValue(betValue)
+  }, [location.state.potentialWin, location.state.betValue])
 
   const handleCloseModal = () => {
     setIsOpenModal(false)
@@ -54,6 +58,7 @@ const MatchResultPage: React.FC<MatchResultProps> = ({ matches }) => {
       <div className='result-page__matches container  d-flex justify-content-center align-items-center'>
         <div className='d-flex flex-column matches-result w-75'>
           <MatchHubConnection
+            betValue={betValue}
             matches={matches}
             onMatchUpdated={handleMatchUpdated}
             onMatchFinish={onMatchFinish}

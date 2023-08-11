@@ -68,12 +68,12 @@ namespace BetApp.Services
 			return matches;
 		}
 
-		public async Task StartMatchSimulations(string connectionId, List<MatchRequest> matchRequests)
+		public async Task StartMatchSimulations(string connectionId, List<MatchRequest> matchRequests, int betValue)
 		{
 			var coupon = new Coupon
 			{
 				Id = Guid.NewGuid(),
-				BetValue = 100,
+				BetValue = betValue,
 				IsWin = false,
 				TotalCourse = 1,
 				MatchResults = new List<MatchResult>()
@@ -103,7 +103,6 @@ namespace BetApp.Services
 
 				initialMatches.Add(initialMatchData);
 
-/*				_context.MatchResults.Add(initialMatchData);*/
 				coupon.MatchResults.Add(initialMatchData);
 
 				await _hubContext.Groups.AddToGroupAsync(connectionId, matchRequest.MatchId.ToString("D"));

@@ -5,7 +5,7 @@ export interface Match {
   mainTypes: Record<BetType, number>
   goalTypes: Record<BetType, number>
   betType: BetType
-  betTypeCourse?: number
+  betCourse?: number
 }
 
 export enum BetType {
@@ -25,7 +25,7 @@ export type MatchRequest = {
   matchId: string
   teamAId: string
   teamBId: string
-  betTypeCourse: number
+  betCourse: number
   betType: BetType
 }
 

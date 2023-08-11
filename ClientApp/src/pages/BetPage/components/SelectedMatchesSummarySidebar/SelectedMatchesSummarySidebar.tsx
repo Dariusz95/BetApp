@@ -36,7 +36,7 @@ const SelectedMatchesSummarySidebar: React.FC<SelectedMatchesModalProps> = ({
         </div>
         <Link
           state={{
-            betValue: totalBetTypeCourse.toFixed(2),
+            betValue: betValue,
             potentialWin: (betValue * totalBetTypeCourse).toFixed(2),
           }}
           to='/result'

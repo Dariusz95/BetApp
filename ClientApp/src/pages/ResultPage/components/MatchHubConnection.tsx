@@ -3,12 +3,14 @@ import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signal
 import { IMatchLive, Match, MatchRequest } from '../../../models/Match'
 
 interface MatchHubProps {
+  betValue: number
   matches: Match[]
   onMatchUpdated: (data: IMatchLive) => void
   onMatchFinish: (data: boolean) => void
 }
 
 const MatchHubConnection: React.FC<MatchHubProps> = ({
+  betValue,
   matches,
   onMatchUpdated: onMatchUpdated,
   onMatchFinish: onMatchFinish,
@@ -54,14 +56,15 @@ const MatchHubConnection: React.FC<MatchHubProps> = ({
   const startAllMatches = async () => {
     try {
       if (connection) {
-        const matchRequests: any[] = matches.map((match) => ({
+        const matchRequests: MatchRequest[] = matches.map((match) => ({
           matchId: match.id,
           teamAId: match.teamA.id,
           teamBId: match.teamB.id,
-          betCourse: match.betTypeCourse!,
+          betCourse: match.betCourse!,
           betType: match.betType,
         }))
-        connection.invoke('StartMatch', matchRequests)
+        console.log(betValue)
+        connection.invoke('StartMatch', matchRequests, betValue)
       }
     } catch (error) {
       console.log('error when starting matches', error)

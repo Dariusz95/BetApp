@@ -8,7 +8,6 @@ interface MainTypesProps {
 }
 
 const MainTypes: React.FC<MainTypesProps> = ({ match, selectedMatch, handleSelectType }) => {
-  console.log(match)
   return (
     <>
       <div

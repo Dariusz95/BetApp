@@ -18,9 +18,9 @@ namespace BetApp.Services
 			_matchService = matchService;
 		}
 
-		public async Task StartMatch(List<MatchRequest> matchRequest)
+		public async Task StartMatch(List<MatchRequest> matchRequest, int betValue)
 		{
-			await _matchService.StartMatchSimulations(Context.ConnectionId, matchRequest);
+			await _matchService.StartMatchSimulations(Context.ConnectionId, matchRequest,betValue);
 		}
 	}
 }
