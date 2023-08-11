@@ -1,14 +1,14 @@
 ﻿using System.Net;
 using betApp.Models;
-using BetApp.Data;
 using BetApp.Dtos;
 using BetApp.Helpers;
+using BetApp.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BetApp.Controllers
 {
-	[Route("api")]
+    [Route("api")]
 	[ApiController]
 	public class AuthController:Controller
 	{
@@ -79,6 +79,22 @@ namespace BetApp.Controllers
 			Response.Cookies.Delete("jwt", new CookieOptions() { Secure = true, HttpOnly = true, SameSite = SameSiteMode.None });
 
 			return Ok(new { message = "logout success" });
+		}
+
+		[HttpPost("refreshToken")]
+		public IActionResult RefreshToken([FromBody] string jwtToken)
+		{
+			var token = _jwtService.Verify(jwtToken);
+
+			Response.Cookies.Delete("jwt", new CookieOptions() { Secure = true, HttpOnly = true, SameSite = SameSiteMode.None });
+
+			var newRefreshToken = _jwtService.GenerateRefreshToken();
+
+			Response.Cookies.Append("jwt", jwtToken, new CookieOptions() { Secure = true, HttpOnly = true, SameSite = SameSiteMode.None });
+
+			Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions() { Secure = true, HttpOnly = true, SameSite = SameSiteMode.None });
+
+			return Ok(new { AccessToken = token, RefreshToken = newRefreshToken });
 		}
 
 	}

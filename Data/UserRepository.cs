@@ -1,4 +1,5 @@
 ﻿using betApp.Models;
+using BetApp.Interfaces;
 
 namespace BetApp.Data
 {
@@ -21,11 +22,11 @@ namespace BetApp.Data
         public User GetByEmail(string email)
         {
             return _context.Users.FirstOrDefault(u => u.Email == email);
-		}
+        }
 
-		public User GetById(int id)
-		{
-			return _context.Users.FirstOrDefault(u => u.Id == id);
-		}
-	}
+        public User GetById(int id)
+        {
+            return _context.Users.FirstOrDefault(u => u.Id == id);
+        }
+    }
 }

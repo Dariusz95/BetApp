@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Match } from '../pages/bet-page/interfaces/Match'
+import { Match } from '../models/Match'
 
 interface MatchState {
   selectedMatches: Match[]

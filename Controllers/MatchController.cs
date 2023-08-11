@@ -1,4 +1,5 @@
 ﻿using BetApp.Interfaces;
+using BetApp.Models;
 using BetApp.Requests;
 using Microsoft.AspNetCore.Mvc;
 

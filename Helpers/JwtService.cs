@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
@@ -33,6 +34,16 @@ namespace BetApp.Helpers
 			, out SecurityToken validatedToken);
 
 			return (JwtSecurityToken) validatedToken;
+		}
+
+		public string GenerateRefreshToken()
+		{
+			var randomNumber = new byte[32];
+			using (var rng = RandomNumberGenerator.Create())
+			{
+				rng.GetBytes(randomNumber);
+				return Convert.ToBase64String(randomNumber);
+			}
 		}
 	}
 }
