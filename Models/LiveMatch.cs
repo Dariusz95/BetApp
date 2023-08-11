@@ -1,4 +1,6 @@
-﻿namespace BetApp.Models
+﻿using BetApp.Enums;
+
+namespace BetApp.Models
 {
 	public class LiveMatch
 	{
@@ -9,5 +11,7 @@
 		public int TeamBScore { get; set; }
 		public int Counter { get; set; }
 		public bool? IsOver { get; set; }
+		public bool? IsBetWin { get; set; }
+		public BetType BetType { get; set; }
 	}
 }

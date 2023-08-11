@@ -12,7 +12,7 @@ export enum BetType {
   TeamA = 'TeamA',
   TeamB = 'TeamB',
   Draw = 'Draw',
-  None = '0',
+  None = 'None',
   Minus2_5 = 'Minus2_5',
   Plus2_5 = 'Plus2_5',
   Minus3_5 = 'Minus3_5',
@@ -21,12 +21,20 @@ export enum BetType {
   Plus4_5 = 'Plus4_5',
 }
 
+export type MatchRequest = {
+  matchId: string
+  teamAId: string
+  teamBId: string
+  betTypeCourse: number
+  betType: BetType
+}
+
 export interface IMatchResult extends Match {
   counter?: number
   teamAScore?: number
   teamBScore?: number
   isOver?: boolean
-  isBetWin?: boolean
+  isWin?: boolean
 }
 
 export interface MainTypes {
@@ -40,10 +48,11 @@ export interface Team {
   imageUrl: string
 }
 
-export interface IMatchUpdateData {
+export interface IMatchLive {
   id: string
   counter: number
   teamAScore: number
   teamBScore: number
   isOver?: boolean
+  isWin?: boolean
 }

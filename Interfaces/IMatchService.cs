@@ -9,7 +9,5 @@ namespace BetApp.Interfaces
 	{
 		Task<List<Match>> GetMatches();
 		Task StartMatchSimulations(string connectionId, List<MatchRequest> matchRequests);
-		Task AddCoupon(IList<MatchResult> matchResults);
-		Task AddMatchResult(MatchResult matchResult);
 	}
 }

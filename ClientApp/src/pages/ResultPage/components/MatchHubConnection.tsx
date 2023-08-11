@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
-import { IMatchUpdateData, Match } from '../../../models/Match'
+import { IMatchLive, Match, MatchRequest } from '../../../models/Match'
 
 interface MatchHubProps {
   matches: Match[]
-  onMatchUpdated: (data: IMatchUpdateData) => void
-  onMatchFinish: (data: IMatchUpdateData) => void
+  onMatchUpdated: (data: IMatchLive) => void
+  onMatchFinish: (data: boolean) => void
 }
 
 const MatchHubConnection: React.FC<MatchHubProps> = ({
@@ -27,12 +27,12 @@ const MatchHubConnection: React.FC<MatchHubProps> = ({
       try {
         await hubConnection.start()
 
-        hubConnection.on('CounterUpdated', (data: IMatchUpdateData) => {
+        hubConnection.on('CounterUpdated', (data: IMatchLive) => {
           onMatchUpdated(data)
         })
 
-        hubConnection.on('MatchFinished', (data: IMatchUpdateData) => {
-          onMatchFinish(data)
+        hubConnection.on('matchesCompleted', (isCouponWin: boolean) => {
+          onMatchFinish(isCouponWin)
         })
 
         setConnection(hubConnection)
@@ -54,14 +54,13 @@ const MatchHubConnection: React.FC<MatchHubProps> = ({
   const startAllMatches = async () => {
     try {
       if (connection) {
-        const matchRequests = matches.map((match) => ({
+        const matchRequests: any[] = matches.map((match) => ({
           matchId: match.id,
           teamAId: match.teamA.id,
           teamBId: match.teamB.id,
-          betTypeCourse: match.betTypeCourse,
+          betCourse: match.betTypeCourse!,
           betType: match.betType,
         }))
-        console.log('matchRequests', matchRequests)
         connection.invoke('StartMatch', matchRequests)
       }
     } catch (error) {

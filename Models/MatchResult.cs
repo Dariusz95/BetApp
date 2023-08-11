@@ -9,8 +9,8 @@ namespace BetApp.Models
 	public class MatchResult
 	{
 		public Guid Id { get; set; }
-		public int? TeamAScore { get; set; }
-		public int? TeamBScore { get; set; }
+		public int TeamAScore { get; set; }
+		public int TeamBScore { get; set; }
 		[NotMapped]
 		public int? Counter { get; set; }
 		public decimal BetTypeCourse { get; set; }

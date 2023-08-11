@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using BetApp.Data;
 using BetApp.Helpers;
 using BetApp.Interfaces;
@@ -13,7 +14,6 @@ using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// Add services to the container.
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<UserContext>(options =>
@@ -34,6 +34,12 @@ builder.Services.AddCors(options =>
 			.AllowAnyMethod()
 			.AllowCredentials()
 			);
+});
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+	options.JsonSerializerOptions.WriteIndented = true;
 });
 
 builder.Services.AddEndpointsApiExplorer();

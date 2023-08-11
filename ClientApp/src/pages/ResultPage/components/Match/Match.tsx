@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './Match.scss'
-import { checkIfBetIsWin } from '../../../../helpers/checkIfBetIsWin'
 import MatchTeam from './MatchTeam'
 import { getBetTypeText } from '../../../../helpers/getBetTypeText'
 import { IMatchResult } from '../../../../models/Match'
@@ -10,7 +9,7 @@ interface MatchProps {
 }
 
 const MatchResult: React.FC<MatchProps> = ({ match }) => {
-  const { counter: matchCounter, teamAScore, teamBScore, isOver, isBetWin } = match
+  const { counter: matchCounter, teamAScore, teamBScore, isOver, isWin: isBetWin } = match
   const { name: teamAName, imageUrl: teamAImageUrl } = match.teamA
   const { name: teamBName, imageUrl: teamBImageUrl } = match.teamB
 

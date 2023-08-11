@@ -22,14 +22,5 @@ namespace BetApp.Controllers
 			var matches = await _matchService.GetMatches();
 			return Ok(matches);
 		}
-
-		[HttpPost("addCoupon")]
-		public async Task<IActionResult> AddMatchResultsToCoupon(List<MatchResult> matchResults)
-		{
-
-			await _matchService.AddCoupon(matchResults);
-			return Ok();
-		
-		}
 	}
 }

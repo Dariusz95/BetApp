@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using BetApp.Enums;
-using Newtonsoft.Json.Converters;
+﻿using BetApp.Enums;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace BetApp.Requests
 {
@@ -9,8 +9,8 @@ namespace BetApp.Requests
 		public Guid MatchId { get; set; }
 		public Guid TeamAId { get; set; }
 		public Guid TeamBId { get; set; }
-		public decimal BetTypeCourse { get; set; }
-		[JsonConverter(typeof(StringEnumConverter))]
+		public decimal BetCourse { get; set; }
+		[JsonConverter(typeof(JsonStringEnumConverter))]
 		public BetType BetType { get; set; }
 
 	}
