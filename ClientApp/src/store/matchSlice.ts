@@ -26,7 +26,7 @@ const matchSlice = createSlice({
           state.selectedMatches.splice(matchIndex, 1)
         } else {
           state.selectedMatches[matchIndex].betType = updatedMatch.betType
-          state.selectedMatches[matchIndex].betTypeCourse = updatedMatch.betTypeCourse
+          state.selectedMatches[matchIndex].betCourse = updatedMatch.betCourse
         }
       } else {
         const newMatch: Match = updatedMatch

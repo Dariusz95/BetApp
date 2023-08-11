@@ -26,7 +26,7 @@ const MatchResult: React.FC<MatchProps> = ({ match }) => {
       </div>
       <div className='result__betInfo d-flex align-items-center justify-content-between px-2 font-weight-bold w-100'>
         <span>{getBetTypeText(match)}</span>
-        <span>{match.betTypeCourse}</span>
+        <span>{match.betCourse}</span>
       </div>
     </li>
   )

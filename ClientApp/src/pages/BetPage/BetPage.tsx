@@ -18,7 +18,7 @@ const BetPage = () => {
   const [totalBetTypeCourse, setTotalBetTypeCourse] = useState(1)
 
   const calculateTotalBetTypeCourse = (matches: Match[]) => {
-    const totalCourse = matches.reduce((acc, match) => acc * (match.betTypeCourse || 1), 1)
+    const totalCourse = matches.reduce((acc, match) => acc * (match.betCourse || 1), 1)
     return totalCourse
   }
 
