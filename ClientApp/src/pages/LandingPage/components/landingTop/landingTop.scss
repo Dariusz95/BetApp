@@ -1,137 +1,89 @@
-$pink-color:#ad3db9;
+$pink-color: #ad3db9;
 
-.landing-page-container{
-    height: 100vh;
-    position: relative;
-    padding-top: 65px;
-    background: url('/assets/landing-page/landing-page-ball.jpg') no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+.landing-page-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  position: relative;
+  padding-top: 65px;
+  background: rgb(220, 37, 151);
+  background: linear-gradient(
+    156deg,
+    rgba(220, 37, 151, 1) 0%,
+    rgba(103, 24, 109, 1) 37%,
+    rgba(25, 16, 81, 1) 100%
+  );
 }
 
-.landing-page-bcg{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -100;
-}
+.text-container {
+  flex: 45%;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 
-.text-area{
-    height: 100%;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 150px;
-    padding-top: 200px;
-    color: white;
-    
-    &__header{
-        font-size: 50px;
-        font-weight: bold;
-        text-align: start;
-        margin-bottom: 40px;
-        font-family: monospace;
-    }
-}
+  &__header {
+    font-size: 60px;
+    font-weight: bold;
+    text-align: start;
+    margin-bottom: 40px;
+    font-family: monospace;
+    background: -webkit-linear-gradient(#f8f9fa, #8a57ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
-.image-area{
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 40%;
-    height: 100%;
-    z-index: -10;
+  &__description {
+    color: #ad3db9;
+    font-size: 18px;
+    width: 80%;
+  }
 
-    &__background{
-        position: relative;
-        height: 80vh;
-        width: 100%;
-
-        &--img{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-    }
-}
-
-.linkToRegister{
+  &__button {
     margin-top: 20px;
     font-size: 20px;
-    border-bottom: 2px solid $pink-color;
     text-decoration: none;
-    color: $pink-color;
+    color: #ad3db9;
     font-weight: bold;
+    border-radius: 28px;
+    background: #ad3db9;
+    color: white;
+    padding: 14px 20px;
+  }
+
+  &__button:hover {
+    text-decoration: none;
+  }
+}
+
+.image-container {
+  flex: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__background {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 
 @media only screen and (max-width: 1200px) {
-    .image-area{
-        width: 50%;
-    }
-    .text-area{
-        margin-left: 100px;
+  .text-container {
+    &__header {
+      font-size: 45px;
     }
   }
+}
 
-@media only screen and (max-width: 992px) {
-    .image-area__background{
-        height: 60vh;
-    }
-
-    .image-area{
-        width: 50%;
-    }
-    .text-area{
-        margin-left: 50px;
-        padding-top: 100px;
-
-        &__header{
-            font-size: 40px;
-            font-weight: bold;
-            text-align: start;
-            margin-bottom: 0;
-        }
-    }
+@media (max-width: 768px) {
+  .landing-page-container {
+    flex-direction: column-reverse;
   }
-
-  @media only screen and (max-width: 576px) {
-
-    .image-area{
-        top: 20%;
-        width: 100%;
-        
-        &__background{
-            height: 60vh;
-
-            &--img{
-                height: 70%;
-            }
-        }
-    }
-    .text-area{
-        padding: 20px;
-        width: 100%;
-        margin-left: 0;
-        font-size: 14px;
-        height: 90%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        
-        &__header{
-            font-size: 32px;
-            font-weight: bold;
-            text-align: start;
-            margin-bottom: 0;
-            font-family: monospace;
-            text-align: justify;
-        }
-    }
+  .text-container,
+  .image-container {
+    flex: auto;
   }
+}
