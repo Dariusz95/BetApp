@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom'
 import ResultModal from './components/ResultModal/ResultModal'
 import Confetti from 'react-confetti'
 import { IMatchResult, IMatchLive } from '../../models/Match'
+import Cookies from 'js-cookie'
 
 const MatchResultPage: React.FC<MatchResultProps> = ({ matches }) => {
   const [resultMatchesList, setResultMatchesList] = useState<IMatchResult[]>(matches)

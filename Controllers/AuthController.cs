@@ -1,8 +1,11 @@
 ﻿using System.Net;
+using System.Security.Claims;
 using betApp.Models;
 using BetApp.Dtos;
 using BetApp.Helpers;
 using BetApp.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,23 +37,57 @@ namespace BetApp.Controllers
 			return Created("successs", _userRepository.Create(user));
 		}
 
+		/*		[HttpPost("login")]
+				public IActionResult Login(LoginDto dto)
+				{
+					var user = _userRepository.GetByEmail(dto.Email);
+
+					if (user == null) return BadRequest(new {message = "Invalid Credentials"});
+
+					if(!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+					{
+						return BadRequest(new { message = "Invalid Credentials" });
+					}
+
+					var jwt = _jwtService.Generate(user.Id);
+
+					Response.Cookies.Append("jwt", jwt, new CookieOptions(){ Secure = true,HttpOnly = true, SameSite = SameSiteMode.None });
+
+					return Ok(new {message = "success"});
+
+				}*/
 		[HttpPost("login")]
-		public IActionResult Login(LoginDto dto)
+		public async Task<IActionResult> Login(LoginDto dto)
 		{
 			var user = _userRepository.GetByEmail(dto.Email);
 
-			if (user == null) return BadRequest(new {message = "Invalid Credentials"});
-
-			if(!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+			if (user == null)
 			{
 				return BadRequest(new { message = "Invalid Credentials" });
 			}
 
-			var jwt = _jwtService.Generate(user.Id);
+			if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+			{
+				return BadRequest(new { message = "Invalid Credentials" });
+			}
 
-			Response.Cookies.Append("jwt", jwt, new CookieOptions(){ Secure = true,HttpOnly = true, SameSite = SameSiteMode.None });
+			var claims = new List<Claim>
+			{
+				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Name),
+            };
 
-			return Ok(new {message = "success"});
+			var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+			await HttpContext.SignInAsync(
+				CookieAuthenticationDefaults.AuthenticationScheme,
+				new ClaimsPrincipal(claimsIdentity),
+				new AuthenticationProperties
+				{
+					IsPersistent = true
+				});
+
+			return Ok(new { message = "success" });
 		}
 
 		[HttpGet("user")]
@@ -61,9 +98,9 @@ namespace BetApp.Controllers
 
 				var token = _jwtService.Verify(jwt);
 
-				int userId = int.Parse(token.Issuer);
+				Guid userId = Guid.Parse(token.Issuer);
 
-				var user = _userRepository.GetById(userId);
+				var user = _userRepository.GetUserById(userId);
 
 				return Ok(user);
 			}

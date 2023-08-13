@@ -1,29 +1,20 @@
 import axios, { AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders } from 'axios'
-
+import { RootState } from '../store/store'
+export const selectJwtToken = (state: RootState) => state.auth.jwtToken
 export const instance = axios.create({
   baseURL: process.env.REACT_APP_API_ENDPOINT,
   timeout: 15000,
+  withCredentials: true,
 })
-
-const getJwt = () => {
-  return localStorage.getItem('jwt')
-}
-
-const setJwt = (jwt: string) => {
-  localStorage.setItem('jwt', jwt)
-}
-
-// Funkcja do usuwania JWT z local storage
-const removeJwt = () => {
-  localStorage.removeItem('jwt')
-}
 
 instance.interceptors.request.use(
   (config) => {
-    const token = getJwt()
-    if (token) {
-      config.headers['Authorization'] = 'Bearer ' + token
-    }
+    // const token = selectJwtToken
+    // // const token = getJwt()
+    // console.log('token', token)
+    // if (token) {
+    //   config.headers['Authorization'] = 'Bearer ' + token
+    // }
     return config
   },
   (error) => {
@@ -44,7 +35,7 @@ instance.interceptors.response.use(
 
         try {
           const rs = await instance.post('/refreshToken', {
-            refreshToken: getJwt(),
+            // refreshToken: getJwt(),
           })
 
           const { accessToken } = rs.data

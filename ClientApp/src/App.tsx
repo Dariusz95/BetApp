@@ -15,21 +15,21 @@ import store, { RootState } from './store/store'
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
-  useEffect(() => {
-    ;(async () => {
-      const response = await fetch('https://localhost:8000/api/user', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      })
-        .then((response) => {
-          if (response.ok) {
-            setIsAuthenticated(true)
-          }
-        })
-        .catch((error) => console.error('Error:', error))
-    })()
-  }, [])
+  // useEffect(() => {
+  //   ;(async () => {
+  //     const response = await fetch('https://localhost:8000/api/user', {
+  //       method: 'GET',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       credentials: 'include',
+  //     })
+  //       .then((response) => {
+  //         if (response.ok) {
+  //           setIsAuthenticated(true)
+  //         }
+  //       })
+  //       .catch((error) => console.error('Error:', error))
+  //   })()
+  // }, [])
 
   const selectedMatches = useSelector((state: RootState) => state.selectedMatches.selectedMatches)
 

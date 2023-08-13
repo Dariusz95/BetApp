@@ -24,37 +24,37 @@ const Register = () => {
     }
 
     return (
-        <form onSubmit={submit} className="form-signin">
-            <h1 className="h3 mb-3 font-weight-normal">Please Register</h1>
+      <form onSubmit={submit} className='form-signin'>
+        <h1 className='h3 mb-3 font-weight-normal'>Please Register</h1>
 
-            <input
-                type="email"
-                className="form-control"
-                placeholder="Name"
-                required
-                onChange={(e) => setName(e.target.value)}
-            />
+        <input
+          type='text'
+          className='form-control'
+          placeholder='Name'
+          required
+          onChange={(e) => setName(e.target.value)}
+        />
 
-            <input
-                type="email"
-                className="form-control"
-                placeholder="Email address"
-                required
-                onChange={(e) => setEmail(e.target.value)}
-            />
+        <input
+          type='email'
+          className='form-control'
+          placeholder='Email address'
+          required
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-            <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-            />
+        <input
+          type='password'
+          className='form-control'
+          placeholder='Password'
+          required
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-            <button className="btn btn-lg btn-primary btn-block" type="submit">
-                Submit
-            </button>
-        </form>
+        <button className='btn btn-lg btn-primary btn-block' type='submit'>
+          Submit
+        </button>
+      </form>
     )
 }
 

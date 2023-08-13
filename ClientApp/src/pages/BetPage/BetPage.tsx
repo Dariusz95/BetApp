@@ -9,6 +9,7 @@ import { updateSelectedMatch } from '../../store/matchSlice'
 import { RootState } from '../../store/store'
 import SelectedMatchesSummarySidebar from './components/SelectedMatchesSummarySidebar/SelectedMatchesSummarySidebar'
 import MediaQuery from 'react-responsive'
+import Cookies from 'js-cookie'
 
 const BetPage = () => {
   const [matches, setMatches] = useState<Match[]>([])
@@ -29,6 +30,11 @@ const BetPage = () => {
 
   useEffect(() => {
     fetchMatches()
+  }, [])
+
+  useEffect(() => {
+    const jwtToken = Cookies.get('jwt')
+    console.log('jwtToken', jwtToken)
   }, [])
 
   const handleAccordionClick = (id: string) => {

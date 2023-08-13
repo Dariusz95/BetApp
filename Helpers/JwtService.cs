@@ -8,7 +8,7 @@ namespace BetApp.Helpers
 	public class JwtService
 	{
 		public string secureKey = "secKey3459oihfsoknf3908h20hfnsf";
-		public string Generate(int id)
+		public string Generate(Guid id)
 		{
 			var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secureKey));
 			var credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);

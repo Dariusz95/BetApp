@@ -8,6 +8,7 @@ using BetApp.Enums;
 using BetApp.Data;
 using BetApp.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using betApp.Models;
 
 namespace BetApp.Services
 {
@@ -18,16 +19,17 @@ namespace BetApp.Services
 		private readonly ITeamService _teamService;
 		private readonly IServiceProvider _serviceProvider;
 		private readonly Random _random;
+		private readonly ICurrentUserService _currentUserService;
 
 
-		public MatchService(BetContext context, IHubContext<MatchHub> hubContext, ITeamService teamService, IServiceProvider serviceProvider)
+		public MatchService(BetContext context, IHubContext<MatchHub> hubContext, ITeamService teamService, IServiceProvider serviceProvider, ICurrentUserService currentUserService)
 		{
 			_context = context;
 			_hubContext = hubContext;
 			_teamService = teamService;
 			_serviceProvider = serviceProvider;
 			_random = new Random();
-
+			_currentUserService = currentUserService;
 		}
 
 		public async Task<List<Match>> GetMatches()
@@ -70,13 +72,16 @@ namespace BetApp.Services
 
 		public async Task StartMatchSimulations(string connectionId, List<MatchRequest> matchRequests, int betValue)
 		{
+			User currentUser = await _currentUserService.GetCurrentLoggedInUser();
+
 			var coupon = new Coupon
 			{
 				Id = Guid.NewGuid(),
 				BetValue = betValue,
 				IsWin = false,
 				TotalCourse = 1,
-				MatchResults = new List<MatchResult>()
+				MatchResults = new List<MatchResult>(),
+				User = currentUser
 			};
 
 			decimal totalCourse = 1.0M;
@@ -137,6 +142,10 @@ namespace BetApp.Services
 			bool allMatchesWon = simulatedMatches.All(match => match.IsWin == true);
 
 			await _hubContext.Clients.Client(connectionId).SendAsync("matchesCompleted", allMatchesWon);
+			
+			coupon.IsWin = allMatchesWon;
+
+			await _context.SaveChangesAsync();
 
 			await UpdateMatches(simulatedMatches);
 		}
