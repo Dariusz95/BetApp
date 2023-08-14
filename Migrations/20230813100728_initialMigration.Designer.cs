@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BetApp.Migrations.Bet
+namespace BetApp.Migrations
 {
     [DbContext(typeof(BetContext))]
-    [Migration("20230803200140_ChangeCouponDb")]
-    partial class ChangeCouponDb
+    [Migration("20230813100728_initialMigration")]
+    partial class initialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,16 +31,21 @@ namespace BetApp.Migrations.Bet
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("Course")
-                        .HasColumnType("numeric");
-
-                    b.Property<bool>("IsCouponWin")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("PotentialWinValue")
+                    b.Property<int>("BetValue")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsWin")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal>("TotalCourse")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Coupons");
                 });
@@ -51,10 +56,13 @@ namespace BetApp.Migrations.Bet
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Counter")
+                    b.Property<int>("BetType")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("CouponId")
+                    b.Property<decimal>("BetTypeCourse")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid?>("CouponId")
                         .HasColumnType("uuid");
 
                     b.Property<bool?>("IsWin")
@@ -107,55 +115,90 @@ namespace BetApp.Migrations.Bet
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4d90cc67-653d-42f2-aff9-5029027b1c9f"),
+                            Id = new Guid("cdf9f3eb-a98c-4d31-98f1-e860c8bb9a2f"),
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/2048px-FC_Internazionale_Milano_2021.svg.png",
                             Name = "Intor Mediolan",
                             Power = 90
                         },
                         new
                         {
-                            Id = new Guid("6ed638d1-7a59-4ba9-9aa2-e2014118c9b6"),
+                            Id = new Guid("8ea0a590-ee50-452f-a4d2-ab1514cd20df"),
                             ImageUrl = "https://assets.stickpng.com/images/584a9b3bb080d7616d298777.png",
                             Name = "FC.Barceluna",
                             Power = 75
                         },
                         new
                         {
-                            Id = new Guid("c37199c3-aaff-4f91-b50e-24a7ea568910"),
+                            Id = new Guid("2c921d85-7f56-44e5-9956-e9ca64f85cec"),
                             ImageUrl = "https://logodownload.org/wp-content/uploads/2017/02/manchester-city-fc-logo-escudo-badge.png",
                             Name = "Manchester Citi",
                             Power = 90
                         },
                         new
                         {
-                            Id = new Guid("677af38f-298b-498b-88f2-fff9aad335fa"),
+                            Id = new Guid("eebe0581-b860-43b9-8c07-6f487d2aa005"),
                             ImageUrl = "url_druzyny_c",
                             Name = "Lagia Warszawa",
                             Power = 100
                         },
                         new
                         {
-                            Id = new Guid("685339d6-5f7c-4e3f-8f9f-2b8a04859adb"),
+                            Id = new Guid("24830625-ea43-493c-b90d-a4ff422d3a7c"),
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/hif/f/ff/Manchester_United_FC_crest.png",
                             Name = "Manchuster United",
                             Power = 65
                         },
                         new
                         {
-                            Id = new Guid("e62642bb-7adb-4fa4-b9be-e573b5728fe3"),
+                            Id = new Guid("1a6ff75a-8327-4fff-bec8-7d0e26352cd2"),
                             ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Juventus_Logo.png/1200px-Juventus_Logo.png",
                             Name = "Juventus Turin",
                             Power = 78
                         });
                 });
 
+            modelBuilder.Entity("betApp.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("CoinsAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("BetApp.Models.Coupon", b =>
+                {
+                    b.HasOne("betApp.Models.User", "User")
+                        .WithMany("Coupons")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BetApp.Models.MatchResult", b =>
                 {
                     b.HasOne("BetApp.Models.Coupon", "Coupon")
                         .WithMany("MatchResults")
-                        .HasForeignKey("CouponId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CouponId");
 
                     b.HasOne("BetApp.Models.Team", "TeamA")
                         .WithMany()
@@ -179,6 +222,11 @@ namespace BetApp.Migrations.Bet
             modelBuilder.Entity("BetApp.Models.Coupon", b =>
                 {
                     b.Navigation("MatchResults");
+                });
+
+            modelBuilder.Entity("betApp.Models.User", b =>
+                {
+                    b.Navigation("Coupons");
                 });
 #pragma warning restore 612, 618
         }

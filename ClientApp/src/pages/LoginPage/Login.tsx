@@ -1,37 +1,26 @@
 ﻿import React, { SyntheticEvent, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Authorization } from '../../api/Api-login'
+import { useDispatch } from 'react-redux'
+import axios from 'axios'
+import { setIsAuthenticated } from '../../store/authSlice'
 
-const Login = (props: { onLogin: (isAuthenticated: boolean) => void }) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+const Login = () => {
+  const dispatch = useDispatch()
+  const [email, setEmail] = useState('a@a.pl')
+  const [password, setPassword] = useState('123')
   const [redirect, setRedirect] = useState(false)
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault()
-
-    Authorization.login({ email, password })
+    axios
+      .post('/login/', { email, password }, { withCredentials: true })
       .then((response) => {
-        if (response.ok) {
-          props.onLogin(true)
+        if (response.data.message === 'success') {
+          dispatch(setIsAuthenticated(true))
           setRedirect(true)
         }
       })
       .catch((error) => console.error('Error:', error))
-
-    // const res = await fetch('https://localhost:8000/api/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   credentials: 'include',
-    //   body: JSON.stringify({ email, password }),
-    // })
-    //   .then((response) => {
-    //     if (response.ok) {
-    //       props.onLogin(true)
-    //       setRedirect(true)
-    //     }
-    //   })
-    //   .catch((error) => console.error('Error:', error))
   }
 
   if (redirect) {
@@ -47,6 +36,7 @@ const Login = (props: { onLogin: (isAuthenticated: boolean) => void }) => {
         className='form-control'
         placeholder='Email address'
         required
+        value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
 
@@ -55,6 +45,7 @@ const Login = (props: { onLogin: (isAuthenticated: boolean) => void }) => {
         className='form-control'
         placeholder='Password'
         required
+        value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 

@@ -5,27 +5,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace BetApp.Migrations.Bet
+namespace BetApp.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDbBetContext : Migration
+    public partial class initialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Coupons",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WinValue = table.Column<int>(type: "integer", nullable: false),
-                    Course = table.Column<decimal>(type: "numeric", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coupons", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Teams",
                 columns: table => new
@@ -41,17 +28,54 @@ namespace BetApp.Migrations.Bet
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    CoinsAmount = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Coupons",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    BetValue = table.Column<int>(type: "integer", nullable: false),
+                    IsWin = table.Column<bool>(type: "boolean", nullable: false),
+                    TotalCourse = table.Column<decimal>(type: "numeric", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Coupons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Coupons_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MatchResults",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TeamAScore = table.Column<int>(type: "integer", nullable: false),
                     TeamBScore = table.Column<int>(type: "integer", nullable: false),
-                    Counter = table.Column<int>(type: "integer", nullable: false),
-                    IsOver = table.Column<bool>(type: "boolean", nullable: true),
+                    BetTypeCourse = table.Column<decimal>(type: "numeric", nullable: false),
+                    BetType = table.Column<int>(type: "integer", nullable: false),
+                    IsWin = table.Column<bool>(type: "boolean", nullable: true),
                     TeamAId = table.Column<Guid>(type: "uuid", nullable: false),
                     TeamBId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CouponId = table.Column<Guid>(type: "uuid", nullable: false)
+                    CouponId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -60,8 +84,7 @@ namespace BetApp.Migrations.Bet
                         name: "FK_MatchResults_Coupons_CouponId",
                         column: x => x.CouponId,
                         principalTable: "Coupons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_MatchResults_Teams_TeamAId",
                         column: x => x.TeamAId,
@@ -81,13 +104,18 @@ namespace BetApp.Migrations.Bet
                 columns: new[] { "Id", "ImageUrl", "Name", "Power" },
                 values: new object[,]
                 {
-                    { new Guid("0a26bdf4-dfd1-492d-9f15-dbead21df51f"), "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/2048px-FC_Internazionale_Milano_2021.svg.png", "Intor Mediolan", 90 },
-                    { new Guid("205c1739-15bc-44a3-bfb8-6e83d8b43cee"), "https://logodownload.org/wp-content/uploads/2017/02/manchester-city-fc-logo-escudo-badge.png", "Manchester Citi", 90 },
-                    { new Guid("43efa54c-2411-42d1-ba7e-7ee39b0107e3"), "https://upload.wikimedia.org/wikipedia/hif/f/ff/Manchester_United_FC_crest.png", "Manchuster United", 65 },
-                    { new Guid("5076cf58-93b0-4270-8830-b45ceb1e2f21"), "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Juventus_Logo.png/1200px-Juventus_Logo.png", "Juventus Turin", 78 },
-                    { new Guid("868cd73f-be79-4aff-8371-d314913e1277"), "url_druzyny_c", "Lagia Warszawa", 100 },
-                    { new Guid("95b22527-e2f7-4eb6-bbc4-d9374fd55564"), "https://assets.stickpng.com/images/584a9b3bb080d7616d298777.png", "FC.Barceluna", 75 }
+                    { new Guid("1a6ff75a-8327-4fff-bec8-7d0e26352cd2"), "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Juventus_Logo.png/1200px-Juventus_Logo.png", "Juventus Turin", 78 },
+                    { new Guid("24830625-ea43-493c-b90d-a4ff422d3a7c"), "https://upload.wikimedia.org/wikipedia/hif/f/ff/Manchester_United_FC_crest.png", "Manchuster United", 65 },
+                    { new Guid("2c921d85-7f56-44e5-9956-e9ca64f85cec"), "https://logodownload.org/wp-content/uploads/2017/02/manchester-city-fc-logo-escudo-badge.png", "Manchester Citi", 90 },
+                    { new Guid("8ea0a590-ee50-452f-a4d2-ab1514cd20df"), "https://assets.stickpng.com/images/584a9b3bb080d7616d298777.png", "FC.Barceluna", 75 },
+                    { new Guid("cdf9f3eb-a98c-4d31-98f1-e860c8bb9a2f"), "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FC_Internazionale_Milano_2021.svg/2048px-FC_Internazionale_Milano_2021.svg.png", "Intor Mediolan", 90 },
+                    { new Guid("eebe0581-b860-43b9-8c07-6f487d2aa005"), "url_druzyny_c", "Lagia Warszawa", 100 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Coupons_UserId",
+                table: "Coupons",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MatchResults_CouponId",
@@ -116,6 +144,9 @@ namespace BetApp.Migrations.Bet
 
             migrationBuilder.DropTable(
                 name: "Teams");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

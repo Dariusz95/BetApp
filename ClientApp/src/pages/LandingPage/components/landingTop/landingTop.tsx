@@ -1,28 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import footballer from './../../../../assets/landing-page/footballer.png'
-import shape from './../../../assets/landing-page/shape.png'
-import bcg from './../../../assets/landing-page/bcg.jpg'
+import image from './../../../../assets/landing-page/image.png'
 import './landingTop.scss'
 import { Link } from 'react-router-dom'
 
 const LandingTop = () => {
   return (
     <div className='landing-page-container'>
-      {/* <img
-                className="landing-page-bcg"
-                src={bcg}
-                alt="shape"
-            /> */}
-      <div className='text-area'>
-        <h2 className='text-area__header'>Wirtualna rozrywka w obstawianie meczy</h2>
-        <Link className='linkToRegister' to={'/register'}>
+      <div className='text-container'>
+        <h2 className='text-container__header'>Wirtualna rozrywka w obstawianie meczy</h2>
+        <p className='text-container__description'>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia praesentium alias in
+          provident doloremque ipsam placeat, facilis officia minus tempore voluptatibus doloribus
+          eum voluptatum, modi maiores corrupti deserunt qui sunt?
+        </p>
+        <Link className='text-container__button' to={'/register'}>
           Zarejestruj się i graj
         </Link>
       </div>
-      <div className='image-area'>
-        <div className='image-area__background'>
-          <img className='image-area__background--img' src={footballer} alt='fotballer photo' />
-        </div>
+      <div className='image-container'>
+        <img className='image-container__background' src={image} alt='fotballer photo' />
       </div>
     </div>
   )

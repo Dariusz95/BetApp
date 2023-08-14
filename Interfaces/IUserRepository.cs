@@ -1,11 +1,13 @@
-﻿using betApp.Models;
+﻿using System.Security.Claims;
+using betApp.Models;
 
 namespace BetApp.Interfaces
 {
     public interface IUserRepository
     {
-        User Create(User user);
-        User GetByEmail(string email);
-        User GetById(int id);
-    }
+		Task<User> Create(User user);
+		Task<User> GetByEmail(string email);
+		Task<User> GetUserById(Guid id);
+		Task<User> GetCurrentUserAsync(ClaimsPrincipal userClaims);
+	}
 }

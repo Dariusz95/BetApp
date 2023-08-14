@@ -1,49 +1,57 @@
-﻿import React, { useState } from 'react'
+﻿import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import MobileNav from './components/MobileNav/MobileNav'
 import DesktopNav from './components/DesktopNav/DesktopNav'
 import { NavigationItems } from './components/navigationProps'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../store/store'
+import { setIsAuthenticated } from '../../store/authSlice'
+import axios from 'axios'
 
-const Navigation = (props: {
-    isAuthenticated: boolean
-    onLogout: (isAuthenticated: boolean) => void
-}) => {
-    const isMobile = window.innerWidth < 768
+const Navigation = () => {
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
 
-    const logout = async () => {
-        const res = await fetch('https://localhost:8000/api/logout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-        })
-            .then((response) => {
-                if (response.ok) {
-                    props.onLogout(false)
-                }
-            })
-            .catch((error) => console.error('Error:', error))
+  const isMobile = window.innerWidth < 768
+
+
+
+  const logout = async () => {
+    try {
+      const response = await axios.post('/logout', null, { withCredentials: true })
+
+      if (response.status === 200) {
+        dispatch(setIsAuthenticated(false))
+      }
+    } catch (error) {
+      console.error('Error:', error)
     }
-    let navItems: NavigationItems[]
+  }
+  let navItems: NavigationItems[]
 
-    if (props.isAuthenticated) {
-        navItems = [{ text: 'Wyloguj się', url: '/login', onClick: logout }]
-    } else {
-        navItems = [
-            { text: 'Logowanie', url: '/login' },
-            { text: 'Rejestracja', url: '/register' },
-            { text: 'Obstawiaj', url: '/bet' },
-        ]
-    }
+  const userClick = () => {
+    console.log('click')
+  }
 
-    return (
-        <div className="navigation">
-            {isMobile ? (
-                <MobileNav navItems={navItems} />
-            ) : (
-                <DesktopNav navItems={navItems} />
-            )}
-        </div>
-    )
+  if (isAuthenticated) {
+    navItems = [
+      { text: 'Ranking', url: '', onClick: userClick },
+      { text: 'Wyloguj się', url: '/login', onClick: logout },
+      { text: 'Obstawiaj', url: '/bet' },
+      { text: '', url: '', isProfileUser: true },
+    ]
+  } else {
+    navItems = [
+      { text: 'Logowanie', url: '/login' },
+      { text: 'Rejestracja', url: '/register' },
+    ]
+  }
+
+  return (
+    <div className='navigation'>
+      {isMobile ? <MobileNav navItems={navItems} /> : <DesktopNav navItems={navItems} />}
+    </div>
+  )
 }
 
 export default Navigation

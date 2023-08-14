@@ -1,32 +1,60 @@
-﻿using betApp.Models;
+﻿using System.Security.Claims;
+using betApp.Models;
 using BetApp.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BetApp.Data
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserContext _context;
+        private readonly BetContext _context;
 
-        public UserRepository(UserContext context)
+        public UserRepository(BetContext context)
         {
             _context = context;
         }
-        public User Create(User user)
+        public async Task<User> Create(User user)
         {
+            user.Id = new Guid();
             _context.Users.Add(user);
-            user.Id = _context.SaveChanges();
+			await _context.SaveChangesAsync();
+			return user;
+		}
 
-            return user;
-        }
+		public async Task<User> GetByEmail(string email)
+		{
+			try
+			{
+				return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error while getting user by email", ex);
+			}
+		}
 
-        public User GetByEmail(string email)
-        {
-            return _context.Users.FirstOrDefault(u => u.Email == email);
-        }
+		public async Task<User> GetUserById(Guid id)
+		{
+			try
+			{
+				return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error while getting user by ID", ex);
+			}
+		}
 
-        public User GetById(int id)
-        {
-            return _context.Users.FirstOrDefault(u => u.Id == id);
-        }
-    }
+		public async Task<User> GetCurrentUserAsync(ClaimsPrincipal userClaims)
+		{
+			var userId = userClaims.FindFirstValue("Id");
+
+			if (Guid.TryParse(userId, out Guid userIdGuid))
+			{
+				return await _context.Users.FirstOrDefaultAsync(u => u.Id == userIdGuid);
+			}
+
+			return null;
+		}
+	}
 }
