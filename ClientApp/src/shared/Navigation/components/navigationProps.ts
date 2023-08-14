@@ -3,7 +3,8 @@ export type NavigationProps = {
 }
 
 export type NavigationItems = {
-    text: string
-    url: string
-    onClick?: () => Promise<void>
+  text: string
+  url: string
+  onClick?: () => Promise<void> | void
+  isProfileUser?: boolean
 }

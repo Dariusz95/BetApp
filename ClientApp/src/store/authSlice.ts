@@ -3,14 +3,14 @@ import { createSlice } from '@reduxjs/toolkit'
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    jwtToken: null,
+    isAuthenticated: false,
   },
   reducers: {
-    setJwtToken: (state, action) => {
-      state.jwtToken = action.payload
+    setIsAuthenticated: (state, action) => {
+      state.isAuthenticated = action.payload
     },
   },
 })
 
-export const { setJwtToken } = authSlice.actions
+export const { setIsAuthenticated } = authSlice.actions
 export default authSlice.reducer

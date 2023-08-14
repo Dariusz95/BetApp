@@ -1,11 +1,10 @@
 ﻿import React, { SyntheticEvent, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Authorization } from '../../api/Api-login'
-import Cookies from 'js-cookie'
 import { useDispatch } from 'react-redux'
-import { setJwtToken } from '../../store/authSlice'
+import axios from 'axios'
+import { setIsAuthenticated } from '../../store/authSlice'
 
-const Login = (props: { onLogin: (isAuthenticated: boolean) => void }) => {
+const Login = () => {
   const dispatch = useDispatch()
   const [email, setEmail] = useState('a@a.pl')
   const [password, setPassword] = useState('123')
@@ -13,37 +12,15 @@ const Login = (props: { onLogin: (isAuthenticated: boolean) => void }) => {
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault()
-    console.log('submit')
-    Authorization.login({ email, password }, { withCredentials: true })
+    axios
+      .post('/login/', { email, password }, { withCredentials: true })
       .then((response) => {
-        console.log(response)
-        if (response) {
-          console.log('here')
-          const jwtToken = Cookies.get('jwt')
-          if (jwtToken) {
-            dispatch(setJwtToken(jwtToken))
-            props.onLogin(true)
-            setRedirect(true)
-            console.log('jwtToken', jwtToken)
-          }
-          console.log('jwtToken', jwtToken)
+        if (response.data.message === 'success') {
+          dispatch(setIsAuthenticated(true))
+          setRedirect(true)
         }
       })
       .catch((error) => console.error('Error:', error))
-
-    // const res = await fetch('https://localhost:8000/api/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   credentials: 'include',
-    //   body: JSON.stringify({ email, password }),
-    // })
-    //   .then((response) => {
-    //     if (response.ok) {
-    //       props.onLogin(true)
-    //       setRedirect(true)
-    //     }
-    //   })
-    //   .catch((error) => console.error('Error:', error))
   }
 
   if (redirect) {

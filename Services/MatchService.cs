@@ -112,7 +112,7 @@ namespace BetApp.Services
 
 				await _hubContext.Groups.AddToGroupAsync(connectionId, matchRequest.MatchId.ToString("D"));
 			}
-			coupon.TotalCourse = totalCourse;
+			coupon.TotalCourse = Math.Round(totalCourse, 2);
 
 			await _context.MatchResults.AddRangeAsync(initialMatches);
 
@@ -144,6 +144,13 @@ namespace BetApp.Services
 			await _hubContext.Clients.Client(connectionId).SendAsync("matchesCompleted", allMatchesWon);
 			
 			coupon.IsWin = allMatchesWon;
+
+			if(allMatchesWon){
+				var winValue = Math.Round(totalCourse * betValue,2);
+				currentUser.CoinsAmount += winValue;
+			}else{
+				currentUser.CoinsAmount -= betValue;
+			}
 
 			await _context.SaveChangesAsync();
 
@@ -217,7 +224,7 @@ namespace BetApp.Services
 					var match = await _context.MatchResults.SingleOrDefaultAsync(i => i.Id == simulatedMatch.Id);
 					if (match == null)
 					{
-						throw new Exception("Not found");
+						throw new Exception("Match not found");
 					}
 
 					match.TeamAScore = simulatedMatch.TeamAScore;

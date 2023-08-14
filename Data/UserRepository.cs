@@ -1,4 +1,5 @@
-﻿using betApp.Models;
+﻿using System.Security.Claims;
+using betApp.Models;
 using BetApp.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,14 +21,40 @@ namespace BetApp.Data
 			return user;
 		}
 
-        public User GetByEmail(string email)
-        {
-            return _context.Users.FirstOrDefault(u => u.Email == email);
-        }
+		public async Task<User> GetByEmail(string email)
+		{
+			try
+			{
+				return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error while getting user by email", ex);
+			}
+		}
 
 		public async Task<User> GetUserById(Guid id)
 		{
-			return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+			try
+			{
+				return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error while getting user by ID", ex);
+			}
+		}
+
+		public async Task<User> GetCurrentUserAsync(ClaimsPrincipal userClaims)
+		{
+			var userId = userClaims.FindFirstValue("Id");
+
+			if (Guid.TryParse(userId, out Guid userIdGuid))
+			{
+				return await _context.Users.FirstOrDefaultAsync(u => u.Id == userIdGuid);
+			}
+
+			return null;
 		}
 	}
 }
