@@ -8,6 +8,8 @@ import ResultModal from './components/ResultModal/ResultModal'
 import Confetti from 'react-confetti'
 import { IMatchResult, IMatchLive } from '../../models/Match'
 import Cookies from 'js-cookie'
+import { useDispatch } from 'react-redux'
+import { setIfRefreshCurrentUserDetails } from '../../store/authSlice'
 
 const MatchResultPage: React.FC<MatchResultProps> = ({ matches }) => {
   const [resultMatchesList, setResultMatchesList] = useState<IMatchResult[]>(matches)
@@ -17,6 +19,7 @@ const MatchResultPage: React.FC<MatchResultProps> = ({ matches }) => {
   const [betValue, setBetValue] = useState(0)
   const location = useLocation()
   const [showConfetti, setShowConfetti] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const { potentialWin, betValue } = location.state
@@ -52,6 +55,7 @@ const MatchResultPage: React.FC<MatchResultProps> = ({ matches }) => {
     setIsOpenModal(true)
     setIsBetWin(isCouponWin)
     setShowConfetti(isCouponWin)
+    dispatch(setIfRefreshCurrentUserDetails(true))
   }
 
   return (

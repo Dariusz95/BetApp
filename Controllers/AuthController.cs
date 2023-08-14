@@ -112,7 +112,6 @@ namespace BetApp.Controllers
 			}
 			catch (Exception ex)
 			{
-				// Obsługa błędów
 				return StatusCode(500, new { message = "Internal Server Error" });
 			}
 		}

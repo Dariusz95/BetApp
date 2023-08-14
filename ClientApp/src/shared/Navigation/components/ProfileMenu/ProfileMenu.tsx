@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react'
 import './ProfileMenu.scss'
 import img from './../../../../assets/landing-page/footballer.png'
 import { Avatar } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
-import { setIsAuthenticated } from '../../../../store/authSlice'
+import { setIfRefreshCurrentUserDetails, setIsAuthenticated } from '../../../../store/authSlice'
 import { UserInfo } from '../../../../models/User'
+import { RootState } from '../../../../store/store'
 const ProfileMenu = () => {
+  console.log('ProfileMenu')
   const [isOpen, setIsOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState({} as UserInfo)
   const dispatch = useDispatch()
+  const ifRefresh = useSelector((state: RootState) => state.auth.ifRefreshCurrentUserDetails)
 
   useEffect(() => {
     ;(async () => {
@@ -17,15 +20,15 @@ const ProfileMenu = () => {
         const response = await axios.get('/current-user/', { withCredentials: true })
         console.log('resp', response)
         if (response.status === 200) {
-          console.log('a', response.data)
           setCurrentUser(response.data)
           dispatch(setIsAuthenticated(true))
+          dispatch(setIfRefreshCurrentUserDetails(false))
         }
       } catch (error) {
         console.error('Error:', error)
       }
     })()
-  }, [])
+  }, [ifRefresh, dispatch])
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen)
