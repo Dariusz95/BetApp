@@ -11,10 +11,8 @@ import axios from 'axios'
 const Navigation = () => {
   const dispatch = useDispatch()
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
-
+  console.log('isAuthenticated w Nav', isAuthenticated)
   const isMobile = window.innerWidth < 768
-
-
 
   const logout = async () => {
     try {
