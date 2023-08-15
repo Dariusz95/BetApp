@@ -7,12 +7,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { setIsAuthenticated } from '../../store/authSlice'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 
 const Navigation = () => {
   const dispatch = useDispatch()
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
   console.log('isAuthenticated w Nav', isAuthenticated)
   const isMobile = window.innerWidth < 768
+
+  const [t, i18n] = useTranslation('navigation')
 
   const logout = async () => {
     try {
@@ -40,7 +43,7 @@ const Navigation = () => {
     ]
   } else {
     navItems = [
-      { text: 'Logowanie', url: '/login' },
+      { text: 'logOut', url: '/login' },
       { text: 'Rejestracja', url: '/register' },
     ]
   }
