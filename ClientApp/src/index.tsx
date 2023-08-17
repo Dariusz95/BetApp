@@ -11,6 +11,8 @@ import navigation_en from './translation/en/navigation.json'
 import navigation_pl from './translation/pl/navigation.json'
 import landingPage_pl from './translation/pl/landingPage.json'
 import landingPage_en from './translation/en/landingPage.json'
+import selectedMatchesSummarySidebar_pl from './translation/pl/selectedMatchesSummarySidebar.json'
+import selectedMatchesSummarySidebar_en from './translation/en/selectedMatchesSummarySidebar.json'
 
 axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT
 
@@ -31,10 +33,12 @@ i18next.init({
     en: {
       navigation: navigation_en,
       landingPage: landingPage_en,
+      selectedMatchesSummarySidebar: selectedMatchesSummarySidebar_en,
     },
     pl: {
       navigation: navigation_pl,
       landingPage: landingPage_pl,
+      selectedMatchesSummarySidebar: selectedMatchesSummarySidebar_pl,
     },
   },
 })

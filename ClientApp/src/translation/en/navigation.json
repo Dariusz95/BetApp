@@ -1,1 +1,7 @@
-{ "logOut": "Logout" }
+{
+  "logOut": "Log out",
+  "logIn": "Log in",
+  "bet": "Bet",
+  "ranking": "Ranking",
+  "register": "Register"
+}

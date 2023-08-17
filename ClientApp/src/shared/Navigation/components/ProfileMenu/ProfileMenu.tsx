@@ -7,13 +7,14 @@ import axios from 'axios'
 import { setIfRefreshCurrentUserDetails, setIsAuthenticated } from '../../../../store/authSlice'
 import { UserInfo } from '../../../../models/User'
 import { RootState } from '../../../../store/store'
+import { useTranslation } from 'react-i18next'
 const ProfileMenu = () => {
   console.log('ProfileMenu')
   const [isOpen, setIsOpen] = useState(false)
   const [currentUser, setCurrentUser] = useState({} as UserInfo)
   const dispatch = useDispatch()
   const ifRefresh = useSelector((state: RootState) => state.auth.ifRefreshCurrentUserDetails)
-
+  const { t, i18n } = useTranslation('navigation')
   useEffect(() => {
     ;(async () => {
       try {
@@ -48,6 +49,25 @@ const ProfileMenu = () => {
           <li>Profil</li>
           <li>Ustawienia</li>
           <li>Wyloguj</li>
+          <li>
+            {' '}
+            <button
+              onClick={() => {
+                i18n.changeLanguage('pl')
+                console.log('pl')
+              }}
+            >
+              pl
+            </button>
+            <button
+              onClick={() => {
+                i18n.changeLanguage('en')
+                console.log('en')
+              }}
+            >
+              en
+            </button>
+          </li>
         </ul>
       )}
     </div>

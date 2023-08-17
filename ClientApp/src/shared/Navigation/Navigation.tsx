@@ -36,15 +36,15 @@ const Navigation = () => {
 
   if (isAuthenticated) {
     navItems = [
-      { text: 'Ranking', url: '', onClick: userClick },
-      { text: 'Wyloguj się', url: '/login', onClick: logout },
-      { text: 'Obstawiaj', url: '/bet' },
+      { text: 'ranking', url: '', onClick: userClick },
+      { text: 'logOut', url: '/login', onClick: logout },
+      { text: 'bet', url: '/bet' },
       { text: '', url: '', isProfileUser: true },
     ]
   } else {
     navItems = [
-      { text: 'logOut', url: '/login' },
-      { text: 'Rejestracja', url: '/register' },
+      { text: 'logIn', url: '/login' },
+      { text: 'register', url: '/register' },
     ]
   }
 

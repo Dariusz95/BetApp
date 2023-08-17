@@ -11,7 +11,6 @@ import MatchResultPage from './pages/ResultPage/MatchResultPage'
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import store, { RootState } from './store/store'
 import axios from 'axios'
-import { setIsAuthenticated } from './store/authSlice'
 
 function App() {
  
@@ -26,7 +25,6 @@ function App() {
           <Routes>
             <Route path='/' element={<LandingPage />} />
             <Route path='/login' element={<Login />} />
-            {/* <Route path='/login' element={<Login onLogin={setIsAuthenticated} />} /> */}
             <Route path='/bet' element={<BetPage />} />
             <Route path='/register' element={<Register />} />
             <Route path='/result' element={<MatchResultPage matches={selectedMatches} />} />

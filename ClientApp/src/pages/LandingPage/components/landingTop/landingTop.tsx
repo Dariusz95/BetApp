@@ -17,7 +17,7 @@ const LandingTop = () => {
           eum voluptatum, modi maiores corrupti deserunt qui sunt?
         </p>
         <Link className='text-container__button' to={'/register'}>
-          Zarejestruj się i graj
+          {t('registerAndPlay')}
         </Link>
       </div>
       <div className='image-container'>

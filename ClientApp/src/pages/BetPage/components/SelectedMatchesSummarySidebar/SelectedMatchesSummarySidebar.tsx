@@ -4,18 +4,20 @@ import { SelectedMatchesModalProps } from '../../interfaces/SingleMatch'
 import MatchSummaryElement from './MatchSummaryElement'
 import { Match } from '../../../../models/Match'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const SelectedMatchesSummarySidebar: React.FC<SelectedMatchesModalProps> = ({
   selectedMatches,
   totalBetTypeCourse,
 }) => {
   const [betValue, setBetValue] = useState(0)
+  const [t, i18n] = useTranslation('selectedMatchesSummarySidebar')
 
   return (
     <div className='selected-matches-sidebar'>
       <div className='sidebar-content w-100'>
         <div className='sidebar-content__header w-100 p-2'>
-          <h5>Twoje typy</h5>
+          <h5>{t('yourTypes')}</h5>
         </div>
         <ul className='matches-list py-2 m-0'>
           {selectedMatches.map((match) => (
@@ -31,8 +33,12 @@ const SelectedMatchesSummarySidebar: React.FC<SelectedMatchesModalProps> = ({
             required
             onChange={(e) => setBetValue(Number(e.target.value))}
           />
-          <span>Łączny kurs: {totalBetTypeCourse.toFixed(2)}</span>
-          <span>Potencjalna wygrana: {(betValue * totalBetTypeCourse).toFixed(2)}</span>
+          <span>
+            {t('totalCourse')}: {totalBetTypeCourse.toFixed(2)}
+          </span>
+          <span>
+            {t('potentialWin')}: {(betValue * totalBetTypeCourse).toFixed(2)}
+          </span>
         </div>
         <Link
           state={{
@@ -45,7 +51,7 @@ const SelectedMatchesSummarySidebar: React.FC<SelectedMatchesModalProps> = ({
             (betValue === 0 ? 'disabled-link' : '')
           }
         >
-          Postaw kupon
+          {t('betCoupon')}
         </Link>
       </div>
     </div>
