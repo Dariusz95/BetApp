@@ -13,22 +13,6 @@ const DesktopNav: React.FC<NavigationProps> = ({ navItems }) => {
       <Link className='desktop-menu__logo' to={'/'}>
         Logo
       </Link>
-      {/* <button
-        onClick={() => {
-          i18n.changeLanguage('pl')
-          console.log('pl')
-        }}
-      >
-        pl
-      </button>
-      <button
-        onClick={() => {
-          i18n.changeLanguage('en')
-          console.log('en')
-        }}
-      >
-        en
-      </button> */}
       <ul className='desktop-menu__items m-0 font-weight-bold'>
         {navItems.map((item, index) => (
           <li key={index}>

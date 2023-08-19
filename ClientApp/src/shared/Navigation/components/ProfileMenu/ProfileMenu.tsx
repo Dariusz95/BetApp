@@ -8,6 +8,8 @@ import { setIfRefreshCurrentUserDetails, setIsAuthenticated } from '../../../../
 import { UserInfo } from '../../../../models/User'
 import { RootState } from '../../../../store/store'
 import { useTranslation } from 'react-i18next'
+import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher'
+
 const ProfileMenu = () => {
   console.log('ProfileMenu')
   const [isOpen, setIsOpen] = useState(false)
@@ -50,23 +52,7 @@ const ProfileMenu = () => {
           <li>Ustawienia</li>
           <li>Wyloguj</li>
           <li>
-            {' '}
-            <button
-              onClick={() => {
-                i18n.changeLanguage('pl')
-                console.log('pl')
-              }}
-            >
-              pl
-            </button>
-            <button
-              onClick={() => {
-                i18n.changeLanguage('en')
-                console.log('en')
-              }}
-            >
-              en
-            </button>
+            <LanguageSwitcher></LanguageSwitcher>
           </li>
         </ul>
       )}

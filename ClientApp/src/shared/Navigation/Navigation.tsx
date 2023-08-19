@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import MobileNav from './components/MobileNav/MobileNav'
 import DesktopNav from './components/DesktopNav/DesktopNav'
 import { NavigationItems } from './components/navigationProps'
@@ -7,15 +6,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store/store'
 import { setIsAuthenticated } from '../../store/authSlice'
 import axios from 'axios'
-import { useTranslation } from 'react-i18next'
 
 const Navigation = () => {
   const dispatch = useDispatch()
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
   console.log('isAuthenticated w Nav', isAuthenticated)
   const isMobile = window.innerWidth < 768
-
-  const [t, i18n] = useTranslation('navigation')
 
   const logout = async () => {
     try {
