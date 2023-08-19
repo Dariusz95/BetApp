@@ -5,27 +5,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BetApp.Data
 {
-    public class UserRepository : IUserRepository
-    {
-        private readonly BetContext _context;
+	public class UserRepository : IUserRepository
+	{
+		private readonly BetContext _context;
 
-        public UserRepository(BetContext context)
-        {
-            _context = context;
-        }
-        public async Task<User> Create(User user)
-        {
-            user.Id = new Guid();
-            _context.Users.Add(user);
+		public UserRepository(BetContext context)
+		{
+			_context = context;
+		}
+		public async Task<User> Create(User user)
+		{
+			user.Id = new Guid();
+			_context.Users.Add(user);
 			await _context.SaveChangesAsync();
 			return user;
 		}
 
-		public async Task<User> GetByEmail(string email)
+		public async Task<User?> GetByEmail(string email)
 		{
 			try
 			{
-				return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+				var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+				if (user == null)
+					return null;
+				return user;
 			}
 			catch (Exception ex)
 			{

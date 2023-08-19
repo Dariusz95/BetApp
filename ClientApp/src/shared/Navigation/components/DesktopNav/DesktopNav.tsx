@@ -3,11 +3,10 @@ import './DesktopNav.scss'
 import { NavigationProps } from '../navigationProps'
 import ProfileMenu from '../ProfileMenu/ProfileMenu'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const DesktopNav: React.FC<NavigationProps> = ({ navItems }) => {
-  const handleLogout = () => {
-    // Obsłuż wylogowanie
-  }
+  const { t, i18n } = useTranslation('navigation')
 
   return (
     <div className='desktop-menu'>
@@ -21,11 +20,11 @@ const DesktopNav: React.FC<NavigationProps> = ({ navItems }) => {
               <ProfileMenu />
             ) : item.onClick ? (
               <Link className='text-container__buttonn' to={item.url} onClick={item.onClick}>
-                {item.text}
+                {t(item.text)}
               </Link>
             ) : (
               <Link className='text-container__buttonn' to={item.url}>
-                {item.text}
+                {t(item.text)}
               </Link>
             )}
           </li>

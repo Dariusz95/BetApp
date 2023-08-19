@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import MobileNav from './components/MobileNav/MobileNav'
 import DesktopNav from './components/DesktopNav/DesktopNav'
 import { NavigationItems } from './components/navigationProps'
@@ -33,15 +32,15 @@ const Navigation = () => {
 
   if (isAuthenticated) {
     navItems = [
-      { text: 'Ranking', url: '', onClick: userClick },
-      { text: 'Wyloguj się', url: '/login', onClick: logout },
-      { text: 'Obstawiaj', url: '/bet' },
+      { text: 'ranking', url: '', onClick: userClick },
+      { text: 'logOut', url: '/login', onClick: logout },
+      { text: 'bet', url: '/bet' },
       { text: '', url: '', isProfileUser: true },
     ]
   } else {
     navItems = [
-      { text: 'Logowanie', url: '/login' },
-      { text: 'Rejestracja', url: '/register' },
+      { text: 'logIn', url: '/login' },
+      { text: 'register', url: '/register' },
     ]
   }
 

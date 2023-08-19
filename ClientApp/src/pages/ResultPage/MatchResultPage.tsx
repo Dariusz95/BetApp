@@ -7,7 +7,6 @@ import { useLocation } from 'react-router-dom'
 import ResultModal from './components/ResultModal/ResultModal'
 import Confetti from 'react-confetti'
 import { IMatchResult, IMatchLive } from '../../models/Match'
-import Cookies from 'js-cookie'
 import { useDispatch } from 'react-redux'
 import { setIfRefreshCurrentUserDetails } from '../../store/authSlice'
 
